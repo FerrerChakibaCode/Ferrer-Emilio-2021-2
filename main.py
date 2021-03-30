@@ -1,35 +1,10 @@
 import requests
 import random
+from Player import *
+import juegos
 
 api = requests.get("https://api-escapamet.vercel.app/")
 
-# Preguntas sobre Python
-def lab_left(cable_hdmi = False, jugador):
-  if cable_hdmi:
-    print(f'REGLAS DEL JUEGO -> {api.json()[0]["objects"][1]["game"]["rules"]}.\n')
-    
-    n = random.randint(0,1)
-    
-    if n == 0:
-      
-      pistas = [api.json()[0]["objects"][1]["game"]["questions"][n]["clue_1"], api.json()[0]["objects"][1]["game"]["questions"][n]["clue_2"], api.json()[0]["objects"][1]["game"]["questions"][n]["clue_3"]]
-      print(api.json()[0]["objects"][1]["game"]["questions"][n]["question"])
-      # str = "tengo en mi cuenta 50,00 $"
-      # str = str.split()
-      # str = [int(str[i]) for i in range(len(str)) if (str[i].replace(",",".")).isnumeric()]
-      user_answer = input("Seleccione 'p' si desea una pista. Si no quiere una pista, escriba su respuesta.\n").lower()
-      while USER.PISTAS != 0:
-        if user_answer == 'p': #TODO VALIDACIÓN DE LA CANTIDAD DE PISTAS QUE LE QUEDAN AL USER
-          print(pistas[0])
-          pistas.pop(0)
-          print(f"\nLe quedan USER.PISTAS cantidad de pistas, si desea otra pista, seleccione 'p'") # TODO PISTAS DEL USUARIO
-      
-
-
-        
-  
-  else:
-    print(api.json()[0]["objects"][1]["game"]["message_requirement"])
 
 def check_character(word):
   for c in word:
@@ -42,7 +17,7 @@ def check_number(word):
       return True
 
 def crear_usuario(username):
-  
+
   avatars = ['Scharifker', 'Eugenio Mendoza', 'Pelusa', 'Gandhi', 'Maradona', 'Tostadora marca Oster']
 
   while " " in username or (not check_character(username)):
@@ -68,20 +43,40 @@ def crear_usuario(username):
   
   for i, ava in enumerate(avatars):
     print(f"{i+1}. {ava}")
-  avatar = input('Seleccione el número correspondiente al avatar que desea escoger: ')
+  avatar_sel = input('Seleccione el número correspondiente al avatar que desea escoger: ')
+  avatar_sel = int(avatar_sel)
 
-  for i, avatar in enumerate(avatars):
-    if int(avatar) == i+1
-    avatar = ava
+  for i, ava in enumerate(avatars):
+    if avatar_sel == i+1:
+      avatar = ava
 
   return username, password, age, avatar
 
-def crear_partida(username):
-  pass  
+def crear_partida():
+  difficulty = input('''Seleccione una dificultad para jugar:
+  1. Easy Peasy, Lemon Squeezy: 5 vidas | 5 pistas | Tiempo: PORDEFINIR
+  2. Memedium: 3 vidas | 3 pistas | Tiempo: PORDEFINIR
+  3. Hard, hard, lemon hard: 1 vida | 2 pistas | Tiempo: PORDEFINIR''')
+  while int(difficulty) not in range (1,4):
+    difficulty = input('Ingrese una dificultad válida, por favor: ')
+  
+  if int(difficulty) == 1:
+    lives = 5
+    clues = 5
 
-# TODO CREAR OBJETO DEL JUGADOR DEPENDIENDO DE DIFICULTAD, CANTIDAD DE VIDAS Y PISTAS, + TIEMPO PARA JUGAR
+  elif int(difficulty) == 2:
+    lives = 3
+    clues = 3
+  
+  elif int(difficulty) == 3:
+    lives = 1
+    clues = 2
+
+  return lives, clues
+  #TODO RECORDAR RECORD E INVENTARIO
+
 def main():
-
+  users_db = []
   # narrativa_1 = f"Hoy 5 de marzo de 2021, la Universidad sigue en cuarentena (esto no es novedad), lo que sí es novedad es que se robaron un Disco Duro de la Universidad del cuarto de redes que tiene toda la información de SAP de estudiantes, pagos y  asignaturas. Necesitamos que nos ayudes a recuperar el disco, para eso tienes {tiempo_según_dificultad} minutos, antes de que el servidor se caiga y no se pueda hacer más nada. ¿Aceptas el reto?"
   # narrativa_2 = f"Bienvenido {nombre_avatar}, gracias por tu disposición a ayudarnos a resolver este inconveniente,  te encuentras actualmente ubicado en la biblioteca, revisa el menú de opciones para ver qué acciones puedes realizar. Recuerda que el tiempo corre más rápido que un trimestre en este reto."
   # narrativa_3 = f"¡Felicidades! Has logrado evitar una catástrofe en la Unimet, entonces... (Se deja libre al estudiante continuar con el desenlace del final a nivel narrativo)."
@@ -95,12 +90,15 @@ def main():
 
   if main_menu_opcion == '1':
     username = input('Ingrese su username: ') # TODO REVISAR QUE YA EXISTA EL USERNAME, CREAR UNA DB
-    if username in users_db["username"]:
-      crear_partida(username)
+    for user in users_db:
+      if username in user[0]:
+        crear_partida(username)
     else:
-      crear_partida(crear_usuario(usuario))
-  lab_left(True)
+      username, password, age, avatar = crear_usuario(username)
+      lives, clues = crear_partida()
+      player = Player(username, password, age, avatar, lives, clues) 
 
+  juegos.lab_left(player, True)
 
 if __name__ == '__main__':
   main()
