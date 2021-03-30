@@ -61,15 +61,15 @@ def crear_partida():
     difficulty = input('Ingrese una dificultad válida, por favor: ')
   
   if int(difficulty) == 1:
-    lives = 5
+    lives = 5.0
     clues = 5
 
   elif int(difficulty) == 2:
-    lives = 3
+    lives = 3.0
     clues = 3
   
   elif int(difficulty) == 3:
-    lives = 1
+    lives = 1.0
     clues = 2
 
   return lives, clues
