@@ -76,7 +76,8 @@ def crear_partida(): #TODO averiguar cómo hacer lo del tiempo
   #TODO RECORDAR RECORD E INVENTARIO
 
 def main():
-  users_db = []
+  emilio = Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, ['contraseña'])
+  users_db = [emilio]
   # narrativa_1 = f"Hoy 5 de marzo de 2021, la Universidad sigue en cuarentena (esto no es novedad), lo que sí es novedad es que se robaron un Disco Duro de la Universidad del cuarto de redes que tiene toda la información de SAP de estudiantes, pagos y  asignaturas. Necesitamos que nos ayudes a recuperar el disco, para eso tienes {tiempo_según_dificultad} minutos, antes de que el servidor se caiga y no se pueda hacer más nada. ¿Aceptas el reto?"
   # narrativa_2 = f"Bienvenido {nombre_avatar}, gracias por tu disposición a ayudarnos a resolver este inconveniente,  te encuentras actualmente ubicado en la biblioteca, revisa el menú de opciones para ver qué acciones puedes realizar. Recuerda que el tiempo corre más rápido que un trimestre en este reto."
   # narrativa_3 = f"¡Felicidades! Has logrado evitar una catástrofe en la Unimet, entonces... (Se deja libre al estudiante continuar con el desenlace del final a nivel narrativo)."
@@ -103,3 +104,11 @@ def main():
 
 if __name__ == '__main__':
   main()
+
+#TODO ver los juegos...
+#TODO arreglar que revise la base de datos de players + si ya el player está creado que no se vuelva puré el main
+#TODO base de datos de los players
+#TODO guardar records y todo en el .txt
+#TODO Condicionales y dirección hacia donde se mueve la persona, ver el video de nuevo
+#TODO Gráficas
+#TODO meterle los textos a las gráficas directamente + eliminarlos de las funciones en juegos
