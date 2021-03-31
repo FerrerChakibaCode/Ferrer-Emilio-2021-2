@@ -52,11 +52,11 @@ def crear_usuario(username):
 
   return username, password, age, avatar
 
-def crear_partida():
+def crear_partida(): #TODO averiguar cómo hacer lo del tiempo
   difficulty = input('''Seleccione una dificultad para jugar:
-  1. Easy Peasy, Lemon Squeezy: 5 vidas | 5 pistas | Tiempo: PORDEFINIR
-  2. Memedium: 3 vidas | 3 pistas | Tiempo: PORDEFINIR
-  3. Hard, hard, lemon hard: 1 vida | 2 pistas | Tiempo: PORDEFINIR''')
+  1. Easy Peasy, Lemon Squeezy: 5 vidas | 5 pistas | Tiempo: 5 minutos
+  2. Memedium: 3 vidas | 3 pistas | Tiempo: 3 minutos
+  3. Hard, hard, lemon hard: 1 vida | 2 pistas | Tiempo: 1 minuto''')
   while int(difficulty) not in range (1,4):
     difficulty = input('Ingrese una dificultad válida, por favor: ')
   
@@ -92,13 +92,14 @@ def main():
     username = input('Ingrese su username: ') # TODO REVISAR QUE YA EXISTA EL USERNAME, CREAR UNA DB
     for user in users_db:
       if username in user[0]:
-        crear_partida(username)
+        crear_partida(username) #TODO 
     else:
       username, password, age, avatar = crear_usuario(username)
       lives, clues = crear_partida()
       player = Player(username, password, age, avatar, lives, clues) 
 
-  juegos.lab_left(player, True)
+  juegos.lab_left(player)
+  #juegos.lab_left(player)
 
 if __name__ == '__main__':
   main()

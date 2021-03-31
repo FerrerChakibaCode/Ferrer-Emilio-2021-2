@@ -1,5 +1,5 @@
 class Player:
-  def __init__(self, username, password, age, avatar, lives, clues, inventory = []):
+  def __init__(self, username, password, age, avatar, lives, clues, inventory = []): #TODO ver cómo guardar record en el .txt
     self.username = username
     self.password = password
     self.age = age

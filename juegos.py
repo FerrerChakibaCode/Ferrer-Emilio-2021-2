@@ -4,9 +4,9 @@ import random
 api = requests.get("https://api-escapamet.vercel.app/") # Guardar la API en una variable 'api'
 
 # Preguntas sobre Python
-def lab_left(player, cable_hdmi = False):
-  if cable_hdmi:
-    print(f'REGLAS DEL JUEGO -> {api.json()[0]["objects"][1]["game"]["rules"]}.\n')
+def lab_left(player):
+  if "cable_hdmi" in player.inventory:
+    print(f'\n-------------------------------------------\n{api.json()[0]["objects"][1]["game"]["name"]}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][1]["game"]["rules"]}.\n')
     
     n = random.randint(0,1) #TODO Descifrar cómo responder la pregunta 0 del lab_left
     
@@ -19,7 +19,7 @@ def lab_left(player, cable_hdmi = False):
       # str = [int(str[i]) for i in range(len(str)) if (str[i].replace(",",".")).isnumeric()]
       user_answer = input("Seleccione 'p' si desea una pista. Si no quiere una pista, escriba su respuesta.\n").lower()
       if player.clues > 0:
-        if user_answer == 'p':
+        if user_answer == 'p' and player.clues > 0 and len(pistas) > 0:
           print(pistas[0])
           pistas.pop(0)
           print(f"\nLe quedan {player.clues} cantidad de pistas, si desea otra pista, seleccione 'p'")
@@ -31,7 +31,7 @@ def lab_left(player, cable_hdmi = False):
       
       while True:
         user_answer = input("Seleccione 'p' si desea una pista. Si no quiere una pista, escriba su respuesta.\n").lower()
-        if user_answer == 'p' and player.clues > 0:
+        if user_answer == 'p' and player.clues > 0 and len(pistas) > 0:
           print(pistas[0])
           pistas.pop(0)
           player.clues -= 1
@@ -52,11 +52,25 @@ def lab_left(player, cable_hdmi = False):
           if keep == 'n':
             break
 
-
   else:
     print(api.json()[0]["objects"][1]["game"]["message_requirement"])
 
 
+def lab_right(player):
+  if "introducir contraseña de la computadora" in player.inventory:
 
+    print(f'\n-------------------------------------------\n{api.json()[0]["objects"][2]["game"]["name"]}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][2]["game"]["rules"]}.\n\n')
 
-def lab_right
+    n = random.randint(0,2)
+
+    pistas = [api.json()[0]["objects"][2]["game"]["questions"][n]["clue_1"], api.json()[0]["objects"][2]["game"]["questions"][n]["clue_2"], api.json()[0]["objects"][2]["game"]["questions"][n]["clue_3"]]
+    
+    print(api.json()[0]["objects"][2]["game"]["questions"][n]["question"])
+    user_answer = input("Seleccione 'p' si desea una pista. Si no quiere una pista, escriba su respuesta.\n").lower()
+
+  
+
+  else:
+    print(api.json()[0]["objects"][2]["game"]["message_requirement"])
+
+    
