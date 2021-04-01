@@ -104,7 +104,7 @@ def main():
 
 if __name__ == '__main__':
   main()
-
+#Preguntas para algún preparador: SOBRE EL DEL FORMATO DE 50$, sobre quiénes deberían ser objetos, sobre el juego de preguntas matemáticas
 #TODO ver los juegos...
 #TODO arreglar que revise la base de datos de players + si ya el player está creado que no se vuelva puré el main
 #TODO base de datos de los players
@@ -112,3 +112,6 @@ if __name__ == '__main__':
 #TODO Condicionales y dirección hacia donde se mueve la persona, ver el video de nuevo
 #TODO Gráficas
 #TODO meterle los textos a las gráficas directamente + eliminarlos de las funciones en juegos
+#TODO Herencia, intentar poner a los Cuartos como objetos y a los Objetos como Subclases de los Cuartos
+#TODO revisar que no sea rompible el juego si los profesores decidiesen meterle más o menos RESPUESTAS, las preguntas estan cool
+#TODO poner los requirements directos desde la API (en los juegos) y no escritos, excepto el de la clave de la Computadora

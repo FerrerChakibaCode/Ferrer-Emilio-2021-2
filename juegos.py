@@ -4,12 +4,12 @@ import Player
 
 api = requests.get("https://api-escapamet.vercel.app/") # Guardar la API en una variable 'api'
 emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, ['contraseña'])
-# Preguntas sobre Python
-def lab_left(player):
+
+def lab_left(player): # Preguntas sobre Python
   if "cable_hdmi" in player.inventory:
     print(f'\n-------------------------------------------\n{(api.json()[0]["objects"][1]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][1]["game"]["rules"]}.\n')
     
-    n = random.randint(0,1) #TODO Descifrar cómo responder la pregunta 0 del lab_left
+    n = (0,(len(api.json()[0]["objects"][1]["game"]["questions"]))-1) # Seleccionador random de qué pregunta toca responder
     
     if n == 0:
       #SI LE TOCA LA PREGUNTA 0
@@ -73,14 +73,14 @@ def lab_left(player):
   else:
     print(api.json()[0]["objects"][1]["game"]["message_requirement"])
 
-
-def lab_right(player): #TODO en el juego donde el award sea "contraseña, verificar que se esté dando esto"
+def lab_right(player): # Adivinanzas
+  #TODO en el juego donde el award sea "contraseña, verificar que se esté dando esto"
 
   if "contraseña" in player.inventory:
 
     print(f'\n-------------------------------------------\n{(api.json()[0]["objects"][2]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][2]["game"]["rules"]}.\n\n')
 
-    n = random.randint(0,2)
+    n = (0,(len(api.json()[0]["objects"][2]["game"]["questions"]))-1) # Seleccionador random de qué pregunta toca responder
 
     pistas = [api.json()[0]["objects"][2]["game"]["questions"][n]["clue_1"], api.json()[0]["objects"][2]["game"]["questions"][n]["clue_2"], api.json()[0]["objects"][2]["game"]["questions"][n]["clue_3"]]
     
@@ -116,11 +116,12 @@ def lab_right(player): #TODO en el juego donde el award sea "contraseña, verifi
   else: #Si no tiene la Contraseña
     print(api.json()[0]["objects"][2]["game"]["message_requirement"])
 
-def library_center(player): #TODO Gráficas en simultáneo con el juego, por el amor de Dios
+def library_center(player): # Ahorcado
+  #TODO Gráficas en simultáneo con el juego, por el amor de Dios
 
   print(f'\n-------------------------------------------\n{(api.json()[1]["objects"][0]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[1]["objects"][0]["game"]["rules"]}.\n')
 
-  n = random.randint(0,2)
+  n = (0,(len(api.json()[1]["objects"][0]["game"]["questions"]))-1) # Seleccionador random de qué pregunta toca responder
 
   pistas = [api.json()[1]["objects"][0]["game"]["questions"][n]["clue_1"], api.json()[1]["objects"][0]["game"]["questions"][n]["clue_2"], api.json()[1]["objects"][0]["game"]["questions"][n]["clue_3"]]
   letras_disponibles = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -137,6 +138,17 @@ def library_center(player): #TODO Gráficas en simultáneo con el juego, por el 
     print("Seleccione la letra que escoja. Seleccione '1' si quiere una pista")
     user_answer = input("> ").lower()
     
+    if user_answer == '1':
+      if player.clues > 0 and len(pistas) > 0:
+        print(pistas[0])
+        pistas.pop(0)
+      elif player.clues == 0:
+        print('A usted ya no le quedan pistas')
+      elif len(pistas) == 0:
+        print('Ya no le quedan pistas en este ahorcado')
+      else:
+        print('No puede utilizar más pistas')
+
     if user_answer in letras_usadas:
       print(f'Esta es la lista de letras usadas: {letras_usadas}')
 
@@ -167,7 +179,26 @@ def library_center(player): #TODO Gráficas en simultáneo con el juego, por el 
       player.show()
       break
 
+def library_left(player): # Preguntas matemáticas
+  #Reglas, Pistas, Awards
+  if "libro de Matemáticas" in player.inventory:
+    print(f'\n-------------------------------------------\n{(api.json()[1]["objects"][1]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[1]["objects"][1]["game"]["rules"]}.\n\n')
+  
+    n = (0,(len(api.json()[1]["objects"][1]["game"]["questions"]))-1) # Seleccionador random de qué pregunta toca responder
+  
+    pistas = [api.json()[1]["objects"][1]["game"]["questions"][n]["clue_1"]]
+
+    while True:
+      print(api.json()[1]["objects"][1]["game"]["questions"][n]["question"])
+      answer = api.json()[1]["objects"][1]["game"]["questions"][n]["answer"] #VALIDAR CON PYTHON SI EL RESULTADO DE LA DERIVADA ES CORRECTO
+      user_answer = 
+  
+  else: # Si no tiene el libro de matemáticas
+    print(api.json()[1]["objects"][1]["game"]["message_requirement"])
+
+def library_right(player):
+  pass
 
     
-
+# lab_right(emilio)
 library_center(emilio)
