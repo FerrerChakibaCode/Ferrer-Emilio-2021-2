@@ -7,7 +7,7 @@ emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 
 # Preguntas sobre Python
 def lab_left(player):
   if "cable_hdmi" in player.inventory:
-    print(f'\n-------------------------------------------\n{api.json()[0]["objects"][1]["game"]["name"]}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][1]["game"]["rules"]}.\n')
+    print(f'\n-------------------------------------------\n{(api.json()[0]["objects"][1]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][1]["game"]["rules"]}.\n')
     
     n = random.randint(0,1) #TODO Descifrar cómo responder la pregunta 0 del lab_left
     
@@ -75,17 +75,15 @@ def lab_left(player):
 
 
 def lab_right(player): #TODO en el juego donde el award sea "contraseña, verificar que se esté dando esto"
-  #TODO recordar DESCONTAR VIDAS, que el loop de preguntas sea continuo, dar el award, verificar tema con las pistas
+
   if "contraseña" in player.inventory:
 
-    print(f'\n-------------------------------------------\n{api.json()[0]["objects"][2]["game"]["name"]}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][2]["game"]["rules"]}.\n\n')
+    print(f'\n-------------------------------------------\n{(api.json()[0]["objects"][2]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][2]["game"]["rules"]}.\n\n')
 
     n = random.randint(0,2)
 
     pistas = [api.json()[0]["objects"][2]["game"]["questions"][n]["clue_1"], api.json()[0]["objects"][2]["game"]["questions"][n]["clue_2"], api.json()[0]["objects"][2]["game"]["questions"][n]["clue_3"]]
     
-    
-
     while True:
       print(api.json()[0]["objects"][2]["game"]["questions"][n]["question"])
     
@@ -118,3 +116,58 @@ def lab_right(player): #TODO en el juego donde el award sea "contraseña, verifi
   else: #Si no tiene la Contraseña
     print(api.json()[0]["objects"][2]["game"]["message_requirement"])
 
+def library_center(player): #TODO Gráficas en simultáneo con el juego, por el amor de Dios
+
+  print(f'\n-------------------------------------------\n{(api.json()[1]["objects"][0]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[1]["objects"][0]["game"]["rules"]}.\n')
+
+  n = random.randint(0,2)
+
+  pistas = [api.json()[1]["objects"][0]["game"]["questions"][n]["clue_1"], api.json()[1]["objects"][0]["game"]["questions"][n]["clue_2"], api.json()[1]["objects"][0]["game"]["questions"][n]["clue_3"]]
+  letras_disponibles = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  letras_usadas = []
+
+  answer = (api.json()[1]["objects"][0]["game"]["questions"][n]["answer"]).lower()
+  answer = list(answer) # Lista de strings de la respuesta directa del API.
+  answer_displayed = ['_' for letter in answer] # La respuesta que el usuario va generando.
+  print(api.json()[1]["objects"][0]["game"]["questions"][n]["question"])
+  
+  intentos = 5
+  while intentos > 0:
+    
+    print("Seleccione la letra que escoja. Seleccione '1' si quiere una pista")
+    user_answer = input("> ").lower()
+    
+    if user_answer in letras_usadas:
+      print(f'Esta es la lista de letras usadas: {letras_usadas}')
+
+    if user_answer in letras_disponibles:
+      letras_disponibles.pop(letras_disponibles.index(user_answer))
+      letras_usadas.append(user_answer)
+      
+      # Contador para ver si una letra NO está
+      c = 0
+      for x in range(len(answer)):
+        if user_answer == answer[x]:
+          answer_displayed[x] = user_answer
+          c += 1
+
+      if c == 0:
+          player.lives -= 0.25
+          intentos -= 1
+          print(f"Incorrecto! Has perdido 0.25 vidas, te quedan {player.lives} vidas y {intentos} intentos para resolver el ahorcado.")
+          
+
+      print(' '.join(answer_displayed))
+       
+
+
+    if answer_displayed == answer:
+      player.inventory.append(api.json()[1]["objects"][0]["game"]["award"])
+      print('\n-------------------------------------------\nCORRECTO! Has desbloqueado el CABLE HDMI para tus siguientes retos...')
+      player.show()
+      break
+
+
+    
+
+library_center(emilio)
