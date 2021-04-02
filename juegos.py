@@ -121,7 +121,7 @@ def library_center(player): # Ahorcado
 
   print(f'\n-------------------------------------------\n{(api.json()[1]["objects"][0]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[1]["objects"][0]["game"]["rules"]}.\n')
 
-  n = (0,(len(api.json()[1]["objects"][0]["game"]["questions"]))-1) # Seleccionador random de qué pregunta toca responder
+  n = random.randint(0,(len(api.json()[1]["objects"][0]["game"]["questions"]))-1) # Seleccionador random de qué pregunta toca responder
 
   pistas = [api.json()[1]["objects"][0]["game"]["questions"][n]["clue_1"], api.json()[1]["objects"][0]["game"]["questions"][n]["clue_2"], api.json()[1]["objects"][0]["game"]["questions"][n]["clue_3"]]
   letras_disponibles = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -129,7 +129,7 @@ def library_center(player): # Ahorcado
 
   answer = (api.json()[1]["objects"][0]["game"]["questions"][n]["answer"]).lower()
   answer = list(answer) # Lista de strings de la respuesta directa del API.
-  answer_displayed = ['_' for letter in answer] # La respuesta que el usuario va generando.
+  answer_displayed = ['_' for letter in answer] # La respuesta que el usuario va construyendo.
   print(api.json()[1]["objects"][0]["game"]["questions"][n]["question"])
   
   intentos = 5
@@ -191,14 +191,38 @@ def library_left(player): # Preguntas matemáticas
     while True:
       print(api.json()[1]["objects"][1]["game"]["questions"][n]["question"])
       answer = api.json()[1]["objects"][1]["game"]["questions"][n]["answer"] #VALIDAR CON PYTHON SI EL RESULTADO DE LA DERIVADA ES CORRECTO
-      user_answer = 
+      #user_answer = 
+      #       x = sympy.Symbol('x')
+      # funcion_api = api.json()[1]["objects"][1]["game"]["questions"][n]["question"]
+      # f = funcion_api.split('f(x)=')
+      # f = (f[-1]).replace(' ', '')
+      # print(f, type(f))
+      # derivada_f = f.diff(x)
+      # print(derivada_f)
   
   else: # Si no tiene el libro de matemáticas
     print(api.json()[1]["objects"][1]["game"]["message_requirement"])
 
-def library_right(player):
-  pass
+def library_right(player): # Criptograma
+  # castigo = 1 vida por partida perdida, award = api.json()[1]["objects"][2]["game"]["award"], preguntas, alfabetos
+  if api.json()[1]["objects"][2]["game"]["requirement"] in player.inventory: # Chequear si tiene el requirement
 
+    print(f'\n-------------------------------------------\n{(api.json()[1]["objects"][2]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][2]["game"]["rules"]}.\n\n')
+
+    n = random.randint(0,len(api.json()[1]["objects"][2]["game"]["questions"]) - 1)
+    alfabeto_ordenado = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    desplazamiento = api.json()[1]["objects"][2]["game"]["questions"][n]["desplazamiento"]
+    alfabeto_desplazado = [alfabeto_ordenado[x + desplazamiento] for x in range(len(alfabeto_ordenado)) ]
+    print(alfabeto_desplazado)
+    while True:
+      
+      mensaje_original = list((api.json()[1]["objects"][2]["game"]["questions"][n]["question"]).lower())
+
+      #cifrar mensaje
+      #mensaje_cifrado = 
+
+  else:
+    print(api.json()[1]["objects"][2]["game"]["message_requirement"])
     
 # lab_right(emilio)
-library_center(emilio)
+# library_center(emilio)
