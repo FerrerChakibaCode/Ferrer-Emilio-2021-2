@@ -10,7 +10,7 @@ class Player:
     self.inventory = inventory
   
   def show(self):
-    return '''USERNAME -> {self.username}
+    return f'''USERNAME -> {self.username}
 EDAD -> {self.age}
 AVATAR -> {self.avatar}
 VIDAS -> {self.lives}

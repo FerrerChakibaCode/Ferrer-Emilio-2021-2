@@ -24,13 +24,26 @@ class Adivinanza(Game):
     self.answers = [(api.json()[0]["objects"][2]["game"]["questions"][n]["answers"][x]) for x in range (5)]
     self.clues = [self.question[f"clue_{x}"] for x in range (1,4)]
 
-  def jugar_adivinanza(self, user_answer):
+  def jugar_adivinanza(self, user_answer, player):
     while True:
       if user_answer in self.answers:
-        player.inventory.append(self.award)
+        emilio.inventory.append(self.award)
         print('\n-------------------------------------------\nCORRECTO! Has desbloqueado la LLAVE para tus siguientes retos...')
-        player.show()
+        print(emilio.show())
+        return self.award
         break
+
+      elif user_answer == 'p' and len(self.clues) > 0:
+        print(self.clues[0])
+        self.clues.pop(0)
+        user_answer = input('> ')
+      
+      elif user_answer == 'p' and len(self.clues) == 0:
+        print('no te quedan pistas')
+        user_answer = input('> ')
+      else:
+        user_answer = input('la cagaste.\n> ')
+
       
 def lab_right(player): # Adivinanzas
   #TODO en el juego donde el award sea "contraseña, verificar que se esté dando esto"
@@ -76,4 +89,9 @@ def lab_right(player): # Adivinanzas
     print(api.json()[0]["objects"][2]["game"]["message_requirement"])
 
 adivi = Adivinanza(room = 0, objeto = 2)
-adivi.jugar_adivinanza()
+user_answer = input('> ')
+adivi.jugar_adivinanza(user_answer, player = emilio)
+
+#award = adivi.jugar_adivinanza(user_answer)
+#emilio.inventory.append(award)
+#print(f'el inventorio actual es: {emilio.inventory}')
