@@ -37,12 +37,15 @@ class LogicaResuelve(Game):
           print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
           print(player.show())
           break
+        else:
+          player.lives -= 0.5
+          print(f"Incorrecto! Has perdido media vida, te quedan {player.lives}. Si desea seguir intentando responder ingrese su respuesta. Si no, presione 'Enter'\n")
     else:
       print(self.message_requirement, f'\nTe quedan {player.lives} vidas.')       
 
     if player.lives <= 0:
       print(graficos.good_bye) # TODO cambiar por un ASCII de game-over
 
-logica = LogicaResuelve(2, 0)
-logica.jugar(emilio)
-print('vamos de nuevo')
+# logica = LogicaResuelve(2, 0)
+# logica.jugar(emilio)
+# print('vamos de nuevo')

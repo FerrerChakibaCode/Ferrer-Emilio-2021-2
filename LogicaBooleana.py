@@ -49,5 +49,5 @@ class LogicaBooleana(Game):
     else:
       print(self.message_requirement)
 
-logic = LogicaBooleana(3, 0)
-logic.jugar(emilio)
+# logic = LogicaBooleana(3, 0)
+# logic.jugar(emilio)
