@@ -24,8 +24,9 @@ class Adivinanza(Game):
     self.answers = [self.question["answers"][x] for x in range (5)]
     self.clues = [self.question[f"clue_{x}"] for x in range (1,4)]
 
-  def jugar(self, user_answer, player):
+  def jugar(self, player):
     while player.lives > 0:
+      user_answer = input('> ')
       if user_answer in self.answers:
         player.inventory.append(self.award)
         print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')

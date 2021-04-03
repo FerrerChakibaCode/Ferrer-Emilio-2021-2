@@ -161,8 +161,8 @@ def main():
     # print(f'USUARIOS: {lista_usuarios}')
 
 main()
-#Preguntas para algún preparador: SOBRE EL DEL FORMATO DE 50$, sobre quiénes deberían ser objetos, sobre el juego de preguntas matemáticas
-#TODO ver los juegos...
+
+#TODO regalar una vida si decide leer un libro en la biblioteca
 #TODO stay in the loop
 #TODO guardar records y todo en el .txt
 #TODO Condicionales y dirección hacia donde se mueve la persona, ver el video de nuevo
