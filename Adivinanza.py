@@ -30,7 +30,6 @@ class Adivinanza(Game):
         player.inventory.append(self.award)
         print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
         print(player.show())
-        # return self.award
         break
 
       elif user_answer == 'p' and len(self.clues) > 0 and player.clues > 0:
