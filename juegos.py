@@ -3,7 +3,7 @@ import random
 import Player
 
 api = requests.get("https://api-escapamet.vercel.app/") # Guardar la API en una variable 'api'
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, ['contraseña'])
+emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, 600, ['contraseña'])
 
 def lab_left(player): # Preguntas sobre Python
   if "cable_hdmi" in player.inventory:
@@ -74,7 +74,6 @@ def lab_left(player): # Preguntas sobre Python
     print(api.json()[0]["objects"][1]["game"]["message_requirement"])
 
 def lab_right(player): # Adivinanzas
-  #TODO en el juego donde el award sea "contraseña, verificar que se esté dando esto"
 
   if "contraseña" in player.inventory:
 

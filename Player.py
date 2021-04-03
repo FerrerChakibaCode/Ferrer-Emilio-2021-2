@@ -1,5 +1,6 @@
 class Player:
-  def __init__(self, username, password, age, avatar, lives, clues, inventory = []):
+  def __init__(self, username, password, age, avatar, lives, clues, time, inventory):
+    
     self.username = username
     self.password = password
     self.age = age
@@ -7,7 +8,9 @@ class Player:
     # self.record = record
     self.lives = lives
     self.clues = clues
+    self.time = time
     self.inventory = inventory
+    
   
   def show(self):
     return f'''USERNAME -> {self.username}
@@ -16,5 +19,6 @@ AVATAR -> {self.avatar}
 VIDAS -> {self.lives}
 PISTAS -> {self.clues}
 INVENTARIO -> {self.inventory}
+TIEMPO -> {self.time}
 '''
 # RECORD -> {self.record}

@@ -3,7 +3,10 @@
 #TODO Quitarle el texto al main sobre las direcciones, ponérselo a las gráficas
 
 # PARA EL AHORCADO, LUEGO MOVER HACIA ABAJO Y DEJAR LOS ROOMS ARRIBA
-spaces = "\n" * 20
+spaces = "\n" * 10
+small_spaces = "\n" * 5
+
+
 library = '''
 \\                                                                                                    //
  \\__________________________________________________________________________________________________//
@@ -169,3 +172,48 @@ ahorcado_muerto = f'''
 
 '''
 
+alfabeto_desplazado = [
+  '0', '1',
+  
+  '''desplazamiento 2
+  
+|  q w e r t y u i o p   |  s y g t v a w k q r  |
+|   a s d f g h j k l    |   c u f h i j l m n   | 
+|    z x c v b n m       |    b z e x d p o      |
+|       [SPACE]          |       [SPACE]         |  
+  ''', 
+  
+  '3',
+
+  ''' desplazamiento 4 
+
+|  q w e r t y u i o p   |  u a i v x c y m s t  |
+|   a s d f g h j k l    |   e w h j k l n o p   | 
+|    z x c v b n m       |    d b g z f r q      |
+|       [SPACE]          |       [SPACE]         |
+
+  ''',
+
+  ''' desplazamiento 5 
+
+|  q w e r t y u i o p   |  v b j w y d z n t u  |
+|   a s d f g h j k l    |   f x i k l m o p q   | 
+|    z x c v b n m       |    e c h a g s r      |
+|       [SPACE]          |       [SPACE]         |
+
+  '''
+]
+
+
+
+
+good_bye = f'''{spaces}
+   ▄██████▄   ▄██████▄   ▄██████▄  ████████▄  ▀█████████▄  ▄██   ▄      ▄████████ 
+  ███    ███ ███    ███ ███    ███ ███   ▀███   ███    ███ ███   ██▄   ███    ███ 
+  ███    █▀  ███    ███ ███    ███ ███    ███   ███    ███ ███▄▄▄███   ███    █▀  
+ ▄███        ███    ███ ███    ███ ███    ███  ▄███▄▄▄██▀  ▀▀▀▀▀▀███  ▄███▄▄▄     
+▀▀███ ████▄  ███    ███ ███    ███ ███    ███ ▀▀███▀▀▀██▄  ▄██   ███ ▀▀███▀▀▀     
+  ███    ███ ███    ███ ███    ███ ███    ███   ███    ██▄ ███   ███   ███    █▄  
+  ███    ███ ███    ███ ███    ███ ███   ▄███   ███    ███ ███   ███   ███    ███ 
+  ████████▀   ▀██████▀   ▀██████▀  ████████▀  ▄█████████▀   ▀█████▀    ██████████
+'''
