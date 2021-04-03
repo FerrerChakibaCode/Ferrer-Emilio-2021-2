@@ -25,7 +25,7 @@ class LogicaResuelve(Game):
 
   def jugar(self, player):
     player.lives -= 1
-    if (self.requirement1 and self.requirement2) in player.inventory:
+    if (self.requirement1 and self.requirement2) in player.inventory and self.award not in player.inventory:
       print(f'\n-------------------------------------------\n{self.game["name"].title()}\n\nREGLAS DEL JUEGO -> {self.rules.capitalize()}.\nTe quedan entonces {player.lives} vidas.\n')
       while player.lives > 0:
         print(graficos.small_spaces, self.question, graficos.small_spaces)

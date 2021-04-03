@@ -21,11 +21,13 @@ class Adivinanza(Game):
     self.question = self.game["questions"][n]
     print(f'\n-------------------------------------------\n{self.game["name"].title()}\n\nREGLAS DEL JUEGO -> {self.rules.capitalize()}.\n\n')
     print(self.question["question"])
-    self.answers = [self.question["answers"][x] for x in range (5)]
     self.clues = [self.question[f"clue_{x}"] for x in range (1,4)]
+    self.answers = [self.question["answers"][x] for x in range (len(self.question["answers"]))]
+
+    
 
   def jugar(self, player):
-    while player.lives > 0:
+    while player.lives > 0 and self.award not in player.inventory:
       user_answer = input('> ')
       if user_answer in self.answers:
         player.inventory.append(self.award)
@@ -37,23 +39,19 @@ class Adivinanza(Game):
         print(self.clues[0])
         self.clues.pop(0)
         player.clues -= 1
-        user_answer = input('> ')
       
       elif user_answer == 'p' and len(self.clues) == 0:
         print('No quedan pistas en esta pregunta.')
-        user_answer = input('> ')
       
       elif user_answer == 'p' and player.clues == 0:
         print('No te quedan pistas')
-        user_answer = input('> ')      
 
       else:
         player.lives -= 0.5
-        user_answer = input(f"Incorrecto! Has perdido media vida, te quedan {player.lives}. Si desea seguir intentando responder ingrese su respuesta. Si no, presione 'Enter'\n")
+        print(f"Incorrecto! Has perdido media vida, te quedan {player.lives}. Si desea seguir intentando responder ingrese su respuesta. Si no, presione 'Enter'\n")
 
     if player.lives == 0:
       print('Game over...') #TODO programar los game over
 
-#award = adivi.jugar_adivinanza(user_answer)
-#emilio.inventory.append(award)
-#print(f'el inventorio actual es: {emilio.inventory}')
+adivi = Adivinanza(0,2)
+adivi.jugar(emilio)

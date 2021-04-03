@@ -4,7 +4,7 @@ import Player
 from Game import Game
 
 api = requests.get("https://api-escapamet.vercel.app/") # Guardar la API en una variable 'api'
-
+emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, 600, ['martillo', 'contraseña'])
 class PreguntasPython(Game):
   def __init__(self, room, objeto):
     super().__init__(room, objeto)
@@ -22,9 +22,10 @@ class PreguntasPython(Game):
     self.answers = self.question["answer"]
     self.clues = [self.question[f"clue_{x}"] for x in range (1, len(self.question) - 2)]
 
-  def jugar(self, user_answer, player):
+  def jugar(self, player):
+    user_answer = input('> ')
     user_answer = user_answer.replace(' ','')
-    while player.lives > 0:
+    while player.lives > 0 and self.award not in player.inventory:
       if self.game["questions"].index(self.question) == 0:
         if user_answer == "frase=int(float(((frase.split())[-2]).replace(',','.')))" or user_answer == "int(float(((frase.split())[-2]).replace(',','.')))" or user_answer == "frase=int(float(((frase.split())[4]).replace(',','.')))" or user_answer == "int(float(((frase.split())[4]).replace(',','.')))":
           player.inventory.append(self.award)
@@ -51,8 +52,8 @@ class PreguntasPython(Game):
           user_answer = input(f"Incorrecto! Has perdido media vida, te quedan {player.lives}. Si desea seguir intentando responder ingrese su respuesta. Si no, presione 'Enter'\n")
       
       elif self.game["questions"].index(self.question) == 1:
-
-        if user_answer == "frase = frase[::-1]" or user_answer == "frase[::-1]":
+        user_answer = user_answer.replace(' ', '')
+        if user_answer == "frase=frase[::-1]" or user_answer == "frase[::-1]":
           player.inventory.append(self.award)
           print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
           print(player.show())
@@ -78,3 +79,6 @@ class PreguntasPython(Game):
 
     if player.lives == 0:
       print('Game over...')
+
+pregunta = PreguntasPython(0, 1)
+pregunta.jugar(emilio)

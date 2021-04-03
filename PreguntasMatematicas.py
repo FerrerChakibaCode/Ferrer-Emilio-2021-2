@@ -23,7 +23,7 @@ class PreguntasMatematicas(Game):
     self.clues = [self.question[f"clue_{x}"] for x in range (1,4)]
 
   def jugar(self, player):
-    if self.requirement in player.inventory:
+    if self.requirement in player.inventory and self.award not in player.inventory:
       pass
 
 

@@ -22,7 +22,7 @@ class LogicaBooleana(Game):
     self.answer = self.question["answer"]
   
   def jugar(self, player):
-    if self.requirement in player.inventory:
+    if self.requirement in player.inventory and self.award not in player.inventory:
       
       print(f'\n-------------------------------------------\n{self.game["name"].title()}\n\nREGLAS DEL JUEGO -> {self.rules.capitalize()}.\n\n')
       while player.lives > 0:
@@ -46,8 +46,11 @@ class LogicaBooleana(Game):
       if player.lives <= 0:
         print(graficos.good_bye)
     
-    else:
+    elif self.award not in player.inventory and self.requirement not in player.inventory:
       print(self.message_requirement)
+    
+    else self.award in player.inventory:
+      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
 
 # logic = LogicaBooleana(3, 0)
 # logic.jugar(emilio)

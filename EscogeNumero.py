@@ -24,7 +24,7 @@ class EscogeNumero(Game):
   def jugar(self, player):
     num = random.randint(1,15)
     fails = 0
-    while player.lives > 0:
+    while player.lives > 0 and self.award not in player.inventory:
       if fails == 3:
         player.lives -= 0.33
         player.lives = round(player.lives, 2)
