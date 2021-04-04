@@ -5,6 +5,7 @@ import Player
 import graficos
 from Game import Game
 
+emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 class Criptograma(Game): #1,2
   def __init__(self, room, objeto):
     super().__init__(room, objeto)
@@ -61,7 +62,7 @@ class Criptograma(Game): #1,2
         user_answer = input('> ')
         if user_answer.lower() in answers_list:
           player.inventory.append(self.award)
-          print('\n-------------------------------------------\nCORRECTO! Has desbloqueado el CABLE HDMI para tus siguientes retos...')
+          print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award} para tus siguientes retos...')
           player.show()
           break
 
@@ -72,53 +73,8 @@ class Criptograma(Game): #1,2
           player.lives -= 1
           print(f"Incorrecto! Has perdido 1 vida, te quedan {player.lives} vidas.")
     
+    elif self.award in player.inventory:
+      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
+
     else:
       print(self.message_requirement)
-
-
-# def library_right(player): # Criptograma
-#   # castigo = 1 vida por partida perdida, award = api.json()[1]["objects"][2]["game"]["award"], preguntas, alfabetos
-#   if api.json()[1]["objects"][2]["game"]["requirement"] in player.inventory: # Chequear si tiene el requirement
-
-#     print(f'\n-------------------------------------------\n{(api.json()[1]["objects"][2]["game"]["name"]).title()}\n\nREGLAS DEL JUEGO -> {api.json()[0]["objects"][2]["game"]["rules"]}.\n\n')
-
-#     n = random.randint(0,len(api.json()[1]["objects"][2]["game"]["questions"]) - 1)
-
-#     alfabeto_ordenado_largo = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g']
-    
-#     desplazamiento = api.json()[1]["objects"][2]["game"]["questions"][n]["desplazamiento"]
-#     alfabeto_desplazado = []
-
-#     for x in range(26):
-#       alfabeto_desplazado.append(alfabeto_ordenado_largo[x + desplazamiento])
-    
-#     mensaje_original = list((api.json()[1]["objects"][2]["game"]["questions"][n]["question"]).lower())
-#     mensaje_cifrado = []
-#     #cifrar mensaje
-#     for letter in mensaje_original:
-#       if letter == 'á':
-#         letter = 'a'
-#       elif letter == 'é':
-#         letter = 'e'
-#       elif letter == 'í':
-#         letter = 'i'
-#       elif letter == 'ó':
-#         letter = 'o'
-#       elif letter == 'ú':
-#         letter = 'u'
-#       if letter != ' ':
-#         index = alfabeto_ordenado_largo.index(letter)
-#         if index > 26:
-#           index -= 26
-#         print(index)
-#         mensaje_cifrado.append(alfabeto_desplazado[index])
-#       if letter == ' ':
-#         mensaje_cifrado.append(' ')
-#     print(mensaje_original, '   ', mensaje_cifrado)
-#     break
-
-#     while True:
-#       print(question) 
-#       user_answer = input('> ')
-#   else:
-#     print(api.json()[1]["objects"][2]["game"]["message_requirement"])

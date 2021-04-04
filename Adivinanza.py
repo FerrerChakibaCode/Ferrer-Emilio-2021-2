@@ -4,7 +4,7 @@ import Player
 from Game import Game
 
 api = requests.get("https://api-escapamet.vercel.app/") # Guardar la API en una variable 'api'
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, 600, ['contraseña'])
+emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class Adivinanza(Game):
   def __init__(self, room, objeto):
@@ -53,5 +53,6 @@ class Adivinanza(Game):
     if player.lives == 0:
       print('Game over...') #TODO programar los game over
 
-adivi = Adivinanza(0,2)
-adivi.jugar(emilio)
+    if self.award in player.inventory:
+      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
+

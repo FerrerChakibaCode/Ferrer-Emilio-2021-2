@@ -5,7 +5,7 @@ import Player
 import graficos
 from Game import Game
 api = requests.get("https://api-escapamet.vercel.app/")
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, 600, ['llave', 'martillo'])
+emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class PalabraMezclada(Game):
   def __init__(self, room, objeto):
@@ -43,8 +43,6 @@ class PalabraMezclada(Game):
       else:
         player.lives -= 0.5
         print(f"Incorrecto! Has perdido media vida, te quedan {player.lives}. Si desea seguir intentando responder ingrese su respuesta. Si no, presione 'Enter'\n")
-
     
-
-mezcla = PalabraMezclada(4,1)
-mezcla.jugar(emilio)
+    if self.award in player.inventory:
+      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')

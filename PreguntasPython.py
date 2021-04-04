@@ -4,7 +4,7 @@ import Player
 from Game import Game
 
 api = requests.get("https://api-escapamet.vercel.app/") # Guardar la API en una variable 'api'
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, 600, ['martillo', 'contraseña'])
+emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 class PreguntasPython(Game):
   def __init__(self, room, objeto):
     super().__init__(room, objeto)
@@ -77,8 +77,8 @@ class PreguntasPython(Game):
           player.lives -= 0.5
           user_answer = input(f"Incorrecto! Has perdido media vida, te quedan {player.lives}. Si desea seguir intentando responder ingrese su respuesta. Si no, presione 'Enter'\n")
 
+    if self.award in player.inventory:
+      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
+
     if player.lives == 0:
       print('Game over...')
-
-pregunta = PreguntasPython(0, 1)
-pregunta.jugar(emilio)

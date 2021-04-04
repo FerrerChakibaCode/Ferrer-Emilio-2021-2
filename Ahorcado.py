@@ -5,7 +5,7 @@ import graficos
 from Game import Game
 
 api = requests.get("https://api-escapamet.vercel.app/") # Guardar la API en una variable 'api'
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 5, 5, 600, ['llave', 'martillo'])
+emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 class Ahorcado(Game):
   def __init__(self, room, objeto):
     super().__init__(room, objeto)
@@ -28,7 +28,7 @@ class Ahorcado(Game):
     self.answer = list(self.answer)
     answer_displayed = ['_' for letter in self.answer] # La respuesta que el usuario va construyendo.
 
-    while intentos > 0 and player.lives > 0:
+    while intentos > 0 and player.lives > 0 and self.award not in player.inventory:
       print(graficos.small_spaces, self.question["question"])
       if intentos == 5:
         print(graficos.ahorcado_5)
@@ -84,7 +84,9 @@ class Ahorcado(Game):
         print('\n-------------------------------------------\nCORRECTO! Has desbloqueado el CABLE HDMI para tus siguientes retos...')
         player.show()
         break
+    
+    if self.award in player.inventory:
+      print(f'Ya tienes {self.award.upper()} en tu inventario, no puedes volver a jugar este juego.')
+    
     if intentos <= 0:
       print(graficos.ahorcado_muerto)
-ahorca = Ahorcado(1, 0)
-ahorca.jugar(emilio)

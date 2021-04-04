@@ -1,11 +1,12 @@
 class Player:
-  def __init__(self, username, password, age, avatar, lives, clues, time, inventory):
+  def __init__(self, username, password, age, avatar, difficulty, lives, clues, time, inventory):
     
     self.username = username
     self.password = password
     self.age = age
     self.avatar = avatar
     # self.record = record
+    self.difficulty = difficulty
     self.lives = lives
     self.clues = clues
     self.time = time
