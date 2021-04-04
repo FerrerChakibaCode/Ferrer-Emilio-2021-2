@@ -4,11 +4,17 @@ import Ahorcado
 import Criptograma
 import Game
 import graficos
+import EscogeNumero
+import json
+import LogicaBooleana
 import LogicaResuelve
 import MemoriaEmoji
+import PalabraMezclada
 import Player
 import PreguntasPython
 import PreguntasMatematicas
+import requests
+import SopaLetras
 import Quizizz
 
 # narrativa_1 = f"Hoy 5 de marzo de 2021, la Universidad sigue en cuarentena (esto no es novedad), lo que sí es novedad es que se robaron un Disco Duro de la Universidad del cuarto de redes que tiene toda la información de SAP de estudiantes, pagos y  asignaturas. Necesitamos que nos ayudes a recuperar el disco, para eso tienes {(player.time)/60} minutos, antes de que el servidor se caiga y no se pueda hacer más nada. ¿Aceptas el reto?"
@@ -50,14 +56,7 @@ def datos_basicos_usuario(username):
     except:
       print('Edad inválida...')
   
-  for i, ava in enumerate(avatars):
-    print(f"{i+1}. {ava}")
-  avatar_sel = input('Seleccione el número correspondiente al avatar que desea escoger: ')
-  avatar_sel = int(avatar_sel)
-
-  for i, ava in enumerate(avatars):
-    if avatar_sel == i+1:
-      avatar = ava
+  avatar = enquiries.choose('ELija su avatar', avatars)
 
   return username, password, age, avatar
 
@@ -90,35 +89,40 @@ def start(users_db):
   while len(username) < 3 or len(username) > 20:
     username = input('Ingrese su username: ')
   if (len(users_db)) > 0:
-    for x in range(len(users_db)):
-      if username == users_db[x].username:
-        player = users_db[x]
-        password = input('Bienvenido de vuelta. Ingresa tu clave\n> ')
-        while password != player.password:
-          password = input('Clave incorrecta\n> ')
-        if password == player.password:
-          difficulty, lives, clues, time = selec_dificultad()
-          player.difficulty = difficulty
-          player.lives = lives
-          player.clues = clues
-          player.time = time
-          return player
+    if username in users_db:
+      player = users_db[username]
+      password = input('Bienvenido de vuelta. Ingresa tu clave\n> ')
+      while password != player[1]:
+        password = input('Clave incorrecta\n> ')
+      if password == player.password:
+        difficulty, lives, clues, time = selec_dificultad()
+        player = Player.Player(username = player[0], password = player[1], age = player[2], avatar = player[3], difficulty = difficulty, lives = lives, clues = clues, time = time, record = player[-1], inventory = [])
+        return player, users_db
 
   else:
     username, password, age, avatar = datos_basicos_usuario(username)
     difficulty, lives, clues, time = selec_dificultad()
-    player = Player(username, password, age, avatar, lives, clues, time) 
-    users_db.append(player)
-    return player
+    player = Player.Player(username = username, password = password, age = age, avatar = avatar, difficulty = difficulty, lives = lives, clues = clues, time = time, inventory = [], record = []) 
+    users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar]
+    return player, users_db
 
-def start_game(player):
-  while True:
+def record_to_json(player, users_db):
+  users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
+
+
+  filename_conext = './users_db.json'
+  with open(filename_conext, 'w') as fp:
+    json.dump(users_db, fp)
+
+def start_game(player, users_db):
+  continuar = True
+  while player.lives > 0 and continuar:
     #BIBLIOTECA
     room = 1
-    print(graficos.library)
+    print(graficos.small_spaces, graficos.library)
     
-    movimientos = ['Ir hacia la PLAZA DEL RECTORADO', 'Ir hacia el PASILLO DE LABORATORIOS'] # Hacia dónde se puede mover
-    objetos = ['Mueble de sentarse', 'Mueble de libros', 'Mueble con gabetas'] # Objetos que puede elegir
+    movimientos = ['Ir hacia atrás, la PLAZA DEL RECTORADO', 'Ir hacia la derecha, el PASILLO DE LABORATORIOS', 'Cancelar'] # Hacia dónde se puede mover
+    objetos = ['Mueble de sentarse', 'Mueble de libros', 'Mueble con gabetas', 'Cancelar'] # Objetos que puede elegir
     
     accion_choices = ['Inspeccionar objeto', 'Salir de la biblioteca'] # Acciones que puede hacer
     accion = enquiries.choose('', accion_choices) # Elige qué acción hacer
@@ -130,7 +134,6 @@ def start_game(player):
         objeto = 1
         preguntar = PreguntasMatematicas.PreguntasMatematicas(room, objeto) # PreguntasMatematicas
         preguntar.jugar(player) # Jugar Preguntas Matemáticas
-        print('llegue hasta aca')
       
       elif objeto_choice == 'Mueble de libros':
         objeto = 0
@@ -142,72 +145,172 @@ def start_game(player):
         cifrado_cesar = Criptograma.Criptograma(room, objeto) # Criptograma
         cifrado_cesar.jugar(player) # Jugar al Criptograma
 
-    else: # Si elige salir de la BIBLIOTECA
+
+    elif accion == 'Salir de la biblioteca': # Si elige salir de la BIBLIOTECA
       desplazamiento = enquiries.choose('', movimientos)
       
-      if desplazamiento == 'Ir hacia la PLAZA DEL RECTORADO':
+      if desplazamiento == 'Ir hacia atrás, la PLAZA DEL RECTORADO':
         # PLAZA DEL RECTORADO
-        while True:
+        while player.lives > 0 and continuar:
           room = 2
-          print(graficos.plaza_rectorado)
+          print(graficos.small_spaces, graficos.plaza_rectorado)
           
-          movimientos = ['Ir hacia la BIBLIOTECA'] # Hacia dónde se puede mover
-          objetos = ['Banco 1', 'Samán', 'Banco 2'] # Objetos que puede elegir
+          movimientos = ['Ir hacia la izquierda, BIBLIOTECA', 'Cancelar'] # Hacia dónde se puede mover
+          objetos = ['Banco 1', 'Samán', 'Banco 2', 'Cancelar'] # Objetos que puede elegir
           
           accion_choices = ['Inspeccionar objeto', 'Salir de la plaza del rectorado'] # Acciones que puede hacer
           accion = enquiries.choose('', accion_choices) # Elige qué acción hacer
           
-          if accion == 'Inspeccionar objeto':
-            objecto_choice = enquiries.choose('', objetos)
+          if accion == 'Inspeccionar objeto': # Si elige ver objetos
+            objeto_choice = enquiries.choose('', objetos)  # Elige el objeto
             
-            if objecto_choice == 'Banco 1':
+            if objeto_choice == 'Banco 1':
               objeto = 1
               quizizz = Quizizz.Quizizz(room, objeto) # Quizizz
               quizizz.jugar(player) # Jugar a Quizizz
             
-            elif objecto_choice == 'Samán':
+            elif objeto_choice == 'Samán':
               objeto = 0
               logresuelve = LogicaResuelve.LogicaResuelve(room, objeto) # Lógica y resuelve
               logresuelve.jugar(player) # Jugar a Lógica y resuelve
 
-            elif objecto_choice == 'Banco 2':
+            elif objeto_choice == 'Banco 2':
               objeto = 2
               memojis = MemoriaEmoji.MemoriaEmoji(room, objeto) # Memoria emoji
               memojis.jugar(player) # Jugar a Memoria emoji
           
           elif accion == 'Salir de la plaza del rectorado':
             desplazamiento = enquiries.choose('', movimientos)
-            if desplazamiento == 'Ir hacia la BIBLIOTECA':
+            if desplazamiento == 'Ir hacia la izquierda, BIBLIOTECA':
               break
 
-          elif accion == 'Salir de la plaza del rectorado':
-            pass
-      else: # Elige ir a PASILLO LABORATORIOS
-        pass
+      elif desplazamiento == 'Ir hacia la derecha, el PASILLO DE LABORATORIOS': # Elige ir a PASILLO LABORATORIOS
+        # PASILLO DE LABORATORIOS
+        while player.lives > 0 and continuar:
+          room = 3
+          print(graficos.small_spaces, graficos.pasillo_laboratorios)
+
+          movimientos = ['Ir hacia la derecha, LABORATORIOS SL001', 'Ir hacia la izquierda, BIBLIOTECA', 'Cancelar'] # Hacia dónde se puede mover
+          objetos = ['Puerta', 'Cancelar']  # Objetos que puede elegir
+          
+          accion_choices = ['Inspeccionar objeto', 'Salir del pasillo de laboratorios']  # Acciones que puede hacer
+          accion = enquiries.choose('', accion_choices)  # Elige qué acción hacer
+    
+          if accion == 'Inspeccionar objeto': # Si elige ver objetos
+            objeto_choice = enquiries.choose('', objetos) # Elige el objeto
+
+            if objeto_choice == 'Puerta':
+              objeto = 0
+              logbooleana = LogicaBooleana.LogicaBooleana(room, objeto) # Lógica booleana
+              logbooleana.jugar(player) # Jugar lógica booleana
+            
+          elif accion == 'Salir del pasillo de laboratorios': # SI elige salir del pasillo de laboratorios
+            desplazamiento = enquiries.choose('', movimientos)
+
+            if desplazamiento == 'Ir hacia la izquierda, BIBLIOTECA':
+              break #Rompe el While del PASILLO, lo que lo deja en BIBLIOTECA de nuevo
+
+            elif desplazamiento == 'Ir hacia la derecha, LABORATORIOS SL001':
+              #LABORATORIOS SL001
+              while player.lives > 0 and continuar:
+                room = 0
+                print(graficos.small_spaces, graficos.laboratorios_sl001)
+
+                movimientos = ['Ir hacia la derecha, SERVIDORES', 'Ir hacia la izquierda, PASILLO DE LABORATORIOS', 'Cancelar']
+                objetos = ['PC 1', 'Pizarra', 'PC 2', 'Cancelar']
+
+                accion_choices = ['Inspeccionar objeto', 'Salir de los LABORATORIOS SL001']  # Acciones que puede hacer
+                accion = enquiries.choose('', accion_choices)  # Elige qué acción hacer
+
+                if accion == 'Inspeccionar objeto':
+                  objeto_choice = enquiries.choose('', objetos)
+
+                  if objeto_choice == 'PC 1': # Si elige la izquierda
+                    objeto = 1
+                    pypreg = PreguntasPython.PreguntasPython(room, objeto) # Preguntas sobre python
+                    pypreg.jugar(player) # Jugar Preguntas sobre python
+                  
+                  elif objeto_choice == 'Pizarra': # Si elige el centro
+                    objeto = 0
+                    sopa = SopaLetras.SopaLetras(room, objeto)
+                    sopa.jugar(player) # TODO PROGRAMAR SOPA DE LETRAS
+                    
+
+                  elif objeto_choice == 'PC 2': # Si elige la derecha
+                    objeto = 2
+                    adivinar = Adivinanza.Adivinanza(room, objeto) # Adivinanzas
+                    adivinar.jugar(player) # Jugar Adivinanzas
+                
+                elif accion == 'Salir de los LABORATORIOS SL001':
+                  desplazamiento = enquiries.choose('', movimientos)
+                  
+                  if desplazamiento == 'Ir hacia la izquierda, PASILLO DE LABORATORIOS':
+                    break # Rompe el While de Laboratorio, para volver al pasillo de laboratorios
+                  
+                  elif desplazamiento == 'Ir hacia la derecha, SERVIDORES':
+                    # SERVIDORES
+                    while player.lives > 0 and continuar:
+                      room = 4
+                      print(graficos.small_spaces, graficos.cuarto_servidores)
+
+                      movimientos = ['Ir hacia la izquierda, LABORATORIOS SL001', 'Cancelar']
+                      objetos = ['Papelera', 'Puerta', 'Rack']
+
+                      accion_choices = ['Inspeccionar objeto', 'Salir del CUARTO DE SERVIDORES']  # Acciones que puede hacer
+                      accion = enquiries.choose('', accion_choices)  # Elige qué acción hacer
+
+                      if accion == 'Inspeccionar objeto':
+                        objeto_choice = enquiries.choose('', objetos)
+
+                        if objeto_choice == 'Papelera':
+                          objeto = 2
+                          escoge = EscogeNumero.EscogeNumero(room, objeto) # Escoge un número entre
+                          escoge.jugar(player) # Jugar Escoge un número entre
+
+                        elif objeto_choice == 'Puerta':
+                          objeto = 0
+                          # finalboss = FinalBoss.FinalBoss(room, objeto)
+                          # finalboss.jugar(player)
+                          # TODO si pierde appendear al record: player.record.append(f'DERROTA EN {player.difficulty}')
+                          player.record.append(f'VICTORIA EN {player.difficulty}')
+                          record_to_json(player, users_db)
+                          print('FELICIDADES, GANASTE!')
+                          continuar = False
+                        
+                        elif objeto_choice == 'Rack':
+                          objeto = 1
+                          palabramezcla = PalabraMezclada.PalabraMezclada(room, objeto) # Palabra mezclada
+                          palabramezcla.jugar(player) # Jugar Palabra mezclada
+
+                      elif accion == 'Salir del CUARTO DE SERVIDORES':
+                        desplazamiento = enquiries.choose('', movimientos)
+                        if desplazamiento == 'Ir hacia la izquierda, LABORATORIOS SL001':
+                          break # Rompe el While de Servidores, para volver al pasillo
+
+                  
+                    
 
 
-  
 
 
 
 def main():
   
   while True:
-    emilio = Player.Player('ferrer', 'az0909az', 19, 'Maradona', 'Easy', 5, 5, 600, ["llave", "libro de matemáticas"])
-    users_db = [emilio]
+    users_db = json.load(open('users_db.json'))
     print('Bienvenido a Escapemet! El Escape room más difícil de jugar y de programar, en toda la Unimet...', graficos.small_spaces)
     main_menu_opciones = ['Crear una partida', 'Ver las instrucciones del juego', 'Estadísticas de jugadores']
     main_menu_opcion = enquiries.choose('', main_menu_opciones)
 
     if main_menu_opcion == main_menu_opciones[0]: # Crear partida
-      player = start(users_db)
+      player, users_db = start(users_db)
       time_minutos = divmod(player.time, 60)
       print(graficos.spaces, f"Hoy 5 de marzo de 2021, la Universidad sigue en cuarentena (esto no es novedad), lo que sí es novedad es que se robaron un Disco Duro de la Universidad del cuarto de redes que tiene toda la información de SAP de estudiantes, pagos y  asignaturas. Necesitamos que nos ayudes a recuperar el disco, para eso tienes {time_minutos} minutos, antes de que el servidor se caiga y no se pueda hacer más nada. ¿Aceptas el reto?", graficos.small_spaces)
       start_choice = enquiries.choose('',['Sí, claro.', 'No, soy una gallina.'])
       if start_choice == 'Sí, claro.': # Comienza el juego
       # Narrativa 2
         print(f"Bienvenido {player.avatar}, gracias por tu disposición a ayudarnos a resolver este inconveniente,  te encuentras actualmente ubicado en la biblioteca, revisa el menú de opciones para ver qué acciones puedes realizar. Recuerda que el tiempo corre más rápido que un trimestre en este reto.") 
-        start_game(player)
+        start_game(player, users_db)
     elif main_menu_opcion == main_menu_opciones[1]: # Ver instrucciones del juego
       print('Instrucciones')
     
@@ -224,13 +327,9 @@ def main():
     # print(f'USUARIOS: {lista_usuarios}')
 
 main()
-
+#TODO sopa de letras
 #TODO Eval para el de Pregunta Python
-#TODO regalar una vida si decide leer un libro en la biblioteca
-#TODO stay in the loop
+#TODO programar cuando le gana al boss
 #TODO guardar records y todo en el .txt
-#TODO Condicionales y dirección hacia donde se mueve la persona, ver el video de nuevo
-#TODO Gráficas
-#TODO meterle los textos a las gráficas directamente + eliminarlos de las funciones en juegos
 #TODO comentar todo el código
 #TODO DIAGRAMA DE CLASES

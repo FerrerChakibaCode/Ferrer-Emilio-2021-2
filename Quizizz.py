@@ -5,7 +5,7 @@ import Player
 import graficos
 from Game import Game
 api = requests.get("https://api-escapamet.vercel.app/")
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
+# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class Quizizz(Game):
   def __init__(self, room, objeto):
@@ -45,4 +45,4 @@ class Quizizz(Game):
           print(f"\nLe quedan {len(self.clues)} pistas en esta pregunta. Y a nivel global le quedan {player.clues} pistas.")
     
     elif self.award in player.inventory:
-      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
+      print(f'Ya tienes {self.award.upper()} en tu inventario, no puedes volver a jugar este juego.')

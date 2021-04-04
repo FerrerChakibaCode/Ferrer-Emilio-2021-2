@@ -8,7 +8,7 @@ from sympy.parsing.sympy_parser import parse_expr
 from Game import Game
 
 api = requests.get("https://api-escapamet.vercel.app/")
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
+# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class PreguntasMatematicas(Game):
   #PONER AWARD COMO VIDA EXTRA
@@ -60,7 +60,7 @@ class PreguntasMatematicas(Game):
             break
 
     elif self.award in player.inventory: # Si ya jugó, no puede volver a jugar...
-        print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
+        print(f'Ya tienes {self.award.upper()} en tu inventario, no puedes volver a jugar este juego.')
 
     else:
-      print(self.message_requirement)
+      print(graficos.small_spaces,self.message_requirement,graficos.small_spaces)

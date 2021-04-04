@@ -5,7 +5,7 @@ import Player
 import graficos
 from Game import Game
 api = requests.get("https://api-escapamet.vercel.app/")
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
+# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class LogicaResuelve(Game):
   def __init__(self, room, objeto):
@@ -24,7 +24,7 @@ class LogicaResuelve(Game):
     self.answer = self.answers[n]
 
   def jugar(self, player):
-    player.lives -= 1
+    
     if (self.requirement1 and self.requirement2) in player.inventory and self.award not in player.inventory:
       print(f'\n-------------------------------------------\n{self.game["name"].title()}\n\nREGLAS DEL JUEGO -> {self.rules.capitalize()}.\nTe quedan entonces {player.lives} vidas.\n')
       while player.lives > 0:
@@ -38,14 +38,15 @@ class LogicaResuelve(Game):
           print(player.show())
           break
         else:
-          player.lives -= 0.5
+          player.lives -= 1
           print(f"Incorrecto! Has perdido media vida, te quedan {player.lives}. Si desea seguir intentando responder ingrese su respuesta. Si no, presione 'Enter'\n")
     
     elif self.award in player.inventory:
-      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
+      print(f'Ya tienes {self.award.upper()} en tu inventario, no puedes volver a jugar este juego.')
 
     elif not (self.requirement1 and self.requirement2 in player.inventory):
-      print(self.message_requirement, f'\nTe quedan {player.lives} vidas.')       
+      player.lives -= 1
+      print(graficos.small_spaces, self.message_requirement, f'\nTe quedan {player.lives} vidas.', graficos.small_spaces)       
 
     if player.lives <= 0:
       print(graficos.good_bye) # TODO cambiar por un ASCII de game-over

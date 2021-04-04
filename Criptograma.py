@@ -5,7 +5,7 @@ import Player
 import graficos
 from Game import Game
 
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
+# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 class Criptograma(Game): #1,2
   def __init__(self, room, objeto):
     super().__init__(room, objeto)
@@ -74,7 +74,7 @@ class Criptograma(Game): #1,2
           print(f"Incorrecto! Has perdido 1 vida, te quedan {player.lives} vidas.")
     
     elif self.award in player.inventory:
-      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
+      print(f'Ya tienes {self.award.upper()} en tu inventario, no puedes volver a jugar este juego.')
 
     else:
-      print(self.message_requirement)
+      print(graficos.small_spaces, self.message_requirement, graficos.small_spaces)

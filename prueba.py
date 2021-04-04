@@ -5,23 +5,25 @@ from sympy import diff, Symbol
 from sympy.parsing.sympy_parser import parse_expr
 
 api = requests.get("https://api-escapamet.vercel.app/")
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
+# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
-funcion_api = api.json()[1]["objects"][1]["game"]["questions"][2]["question"]
-
-f = funcion_api.split('f(x)=') #Tomamos la función del api y la dividimos para tomar la función en sí
-x = (f[0].split())[-1] # Antes de seguir modificando la variable 'f', tomamos nuestra X
-f = f[-1].replace(' ', '')
-f = f.replace('sen', 'sin')
-symbols = {'x': Symbol('x', real = True)}
-x = parse_expr(x, symbols) # Convertimos a X en type que acepte Sympy
-print(type(x))
-f = parse_expr(f, symbols)
-# print(diff(f, symbols['x']))
-
-derivada_f = diff(f, symbols['x'])
-print(derivada_f)
-
-evaluar_derivada_en_x = derivada_f.evalf(subs = {symbols['x']: x})
-evaluar_derivada_en_x = round(evaluar_derivada_en_x, 2)
-print(evaluar_derivada_en_x)
+pregunta = api.json()[2]["objects"][2]["game"]["questions"][0]["question"]
+pregunta = pregunta.replace('\n','')
+pregunta = pregunta.replace('[', '')
+pregunta = pregunta.replace(']', '')
+pregunta = pregunta.replace(' ', '')
+pregunta = list(pregunta.split(','))
+pregunta = [pregunta[:4], pregunta[4:8], pregunta[8:12], pregunta[12:]]
+# for fila in question:
+#   for emoji in fila:
+#     emoji = emoji.replace("'", '')
+print(pregunta)
+# question = question.replace(' ','')
+# print(question)
+# question = list(question.split(','))
+# print(type(question))
+# print('ahora es como lista:\n', question)
+# for fila in question:
+#   fila = fila.replace('[','')
+#   fila = fila.replace(']','')
+# print('\n\n\n',question)

@@ -5,7 +5,7 @@ import graficos
 from Game import Game
 
 api = requests.get("https://api-escapamet.vercel.app/") # Guardar la API en una variable 'api'
-emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
+# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 class Ahorcado(Game):
   def __init__(self, room, objeto):
     super().__init__(room, objeto)
