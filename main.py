@@ -168,6 +168,5 @@ main()
 #TODO Condicionales y dirección hacia donde se mueve la persona, ver el video de nuevo
 #TODO Gráficas
 #TODO meterle los textos a las gráficas directamente + eliminarlos de las funciones en juegos
-#TODO poner los requirements directos desde la API (en los juegos) y no escritos, excepto el de la clave de la Computadora
 #TODO comentar todo el código
 #TODO DIAGRAMA DE CLASES

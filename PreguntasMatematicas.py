@@ -19,8 +19,7 @@ class PreguntasMatematicas(Game):
     self.question = self.game["questions"][n]
     print(f'\n-------------------------------------------\n{self.game["name"].title()}\n\nREGLAS DEL JUEGO -> {self.rules.capitalize()}.\n\n')
     print(self.question["question"])
-    self.answers = [self.question["answers"][x] for x in range (5)]
-    self.clues = [self.question[f"clue_{x}"] for x in range (1,4)]
+    # self.answers = [self.question["answers"][x] for x in range (5)]
 
   def jugar(self, player):
     if self.requirement in player.inventory and self.award not in player.inventory:

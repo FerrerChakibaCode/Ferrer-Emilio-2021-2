@@ -49,7 +49,7 @@ class LogicaBooleana(Game):
     elif self.award not in player.inventory and self.requirement not in player.inventory:
       print(self.message_requirement)
     
-    else self.award in player.inventory:
+    elif self.award in player.inventory:
       print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
 
 # logic = LogicaBooleana(3, 0)
