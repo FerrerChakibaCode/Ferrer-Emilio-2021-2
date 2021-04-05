@@ -1,10 +1,11 @@
-import enquiries
 import Adivinanza
 import Ahorcado
 import Criptograma
+import enquiries
+import EscogeNumero
+import FinalBoss
 import Game
 import graficos
-import EscogeNumero
 import json
 import LogicaBooleana
 import LogicaResuelve
@@ -89,23 +90,41 @@ def start(users_db):
   username = input('Ingrese su username: ')
   while len(username) < 3 or len(username) > 20:
     username = input('Ingrese su username: ')
-  if (len(users_db)) > 0:
-    if username in users_db:
-      player = users_db[f'{username}']
-      password = input('Bienvenido de vuelta. Ingresa tu clave\n> ')
-      while password != player[1]:
-        password = input('Clave incorrecta\n> ')
+  if username in users_db:
+    data_player = users_db[f'{username}']
+    password = input('Bienvenido de vuelta. Ingresa tu clave\n> ')
+    while password != player[1]:
+      password = input('Clave incorrecta\n> ')
 
-      difficulty, lives, clues, time = selec_dificultad()
-      player = Player.Player(username = player[0], password = player[1], age = player[2], avatar = player[3], difficulty = difficulty, lives = lives, clues = clues, time = time, record = player[-1], inventory = [])
-      return player, users_db
+    difficulty, lives, clues, time = selec_dificultad()
+    player = Player.Player(username = data_player[0], password = data_player[1], age = data_player[2], avatar = data_player[3], difficulty = difficulty, lives = lives, clues = clues, time = time, record = data_player[-1], inventory = [])
+    return player
+
 
   else:
     username, password, age, avatar = datos_basicos_usuario(username)
     difficulty, lives, clues, time = selec_dificultad()
     player = Player.Player(username = username, password = password, age = age, avatar = avatar, difficulty = difficulty, lives = lives, clues = clues, time = time, inventory = [], record = [0, 0, 0]) 
-    users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
-    return player, users_db
+    
+    return player
+
+# define the countdown func.
+def countdown(t, player):
+    
+    while t:
+        mins, secs = divmod(t, 60)
+        timer = '{:02d}:{:02d}'.format(mins, secs)
+        print(timer, end="\r")
+        time.sleep(1)
+        t -= 1
+      
+    print('Fire in the hole!!')
+  
+  
+# input time in seconds
+
+  
+# function call
 
 def record_to_json(player, users_db):
   users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
@@ -118,9 +137,12 @@ def record_to_json(player, users_db):
 def start_game(player, users_db):
   continuar = True
   while player.lives > 0 and continuar:
+    # t = player.time
+    # countdown(t, player)
     #BIBLIOTECA
     # first_time = time.perf_counter()
-    
+    boss = FinalBoss.FinalBoss(4,0)
+    boss.jugar(player)
     room = 1
     print(graficos.small_spaces, graficos.library)
     
@@ -275,28 +297,41 @@ def start_game(player, users_db):
 
                         elif objeto_choice == 'Puerta':
                           objeto = 0
-                          # finalboss = FinalBoss.FinalBoss(room, objeto)
-                          # finalboss.jugar(player)
-                          # TODO si pierde appendear al record: player.record.append(f'DERROTA EN {player.difficulty}')
-                          if finalboss.award in player.inventory:
+                          # finalboss = FinalBoss.FinalBoss(room, objeto) FINAL EN CONSTRUCCIÓN
+                          # finalboss.jugar(player) FINAL EN CONSTRUCCIÓN
+                          if api.json()[4]["objects"][0]["game"]["requirement"][0] in player.inventory and api.json()[4]["objects"][0]["game"]["requirement"][1]:
                             print('FELICIDADES, GANASTE!')
-                            
                             if player.difficulty == 'Easy':
                               player.record[0] += 1
-                              record_to_json(player, users_db)
-                              
-
                             elif player.difficulty == 'Medium':
                               player.record[1] += 1
-                              record_to_json(player, users_db)
-
                             elif player.difficulty == 'Hard':
-                              player.record[-1] += 1
-                              record_to_json(player, users_db)
+                              player.record[2] += 1
+                            users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record] # Guardar variables del player que nos interesan en el Users_DB
+                            record_to_json(player, users_db) # Guardar Users_DB diccionario al JSON
+                          
+                          # if finalboss.award in player.inventory:
+                          #   print('FELICIDADES, GANASTE!')
+                            
+                          #   if player.difficulty == 'Easy':
+                          #     player.record[0] += 1
+                          #     users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
+                          #     record_to_json(player, users_db)
+                              
 
-                            continuar = False
-                          else:
-                            print(graficos.small_spaces, graficos.good_bye, graficos.small_spaces)
+                          #   elif player.difficulty == 'Medium':
+                          #     player.record[1] += 1
+                          #     users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
+                          #     record_to_json(player, users_db)
+
+                          #   elif player.difficulty == 'Hard':
+                          #     player.record[-1] += 1
+                          #     users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
+                          #     record_to_json(player, users_db)
+                          continuar = False
+
+                          # else:
+                          #   print(graficos.small_spaces, graficos.good_bye, graficos.small_spaces)
 
                         elif objeto_choice == 'Rack':
                           objeto = 1
@@ -318,7 +353,8 @@ def main():
     main_menu_opcion = enquiries.choose('', main_menu_opciones)
 
     if main_menu_opcion == main_menu_opciones[0]: # Crear partida
-      player, users_db = start(users_db)
+      player = start(users_db)
+      
       time_minutos = divmod(player.time, 60)
       print(graficos.spaces, f"Hoy 5 de marzo de 2021, la Universidad sigue en cuarentena (esto no es novedad), lo que sí es novedad es que se robaron un Disco Duro de la Universidad del cuarto de redes que tiene toda la información de SAP de estudiantes, pagos y  asignaturas. Necesitamos que nos ayudes a recuperar el disco, para eso tienes {time_minutos} minutos, antes de que el servidor se caiga y no se pueda hacer más nada. ¿Aceptas el reto?", graficos.small_spaces)
       start_choice = enquiries.choose('',['Sí, claro.', 'No, soy una gallina.'])
@@ -338,6 +374,7 @@ def main():
 
 
 main()
+#TODO revisar sopa de letras
 #TODO tiempo
 #TODO programar cuando le gana al boss
 #TODO guardar records y todo en el .txt
