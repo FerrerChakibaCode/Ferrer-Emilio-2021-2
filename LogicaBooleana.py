@@ -36,7 +36,6 @@ class LogicaBooleana(Game):
         if user_answer == self.answer:
           player.inventory.append(self.award)
           print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
-          print(player.show())
           break
         
         else:

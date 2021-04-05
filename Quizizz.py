@@ -46,3 +46,4 @@ class Quizizz(Game):
     
     elif self.award in player.inventory:
       print(f'Ya tienes {self.award.upper()} en tu inventario, no puedes volver a jugar este juego.')
+  

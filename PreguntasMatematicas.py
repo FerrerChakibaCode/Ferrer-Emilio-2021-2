@@ -16,7 +16,7 @@ class PreguntasMatematicas(Game):
     super().__init__(room, objeto)
     self.game = self.objeto["game"]
     self.message_requirement = self.game["message_requirement"]
-    self.requirement = self.game["requirement"]
+    self.requirement = self.game["requirement"] + ' 1'
     self.name = self.game["name"]
     self.rules = self.game["rules"].capitalize()
     self.award = self.game["award"]

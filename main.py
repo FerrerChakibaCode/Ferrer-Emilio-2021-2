@@ -15,6 +15,7 @@ import PreguntasPython
 import PreguntasMatematicas
 import requests
 import SopaLetras
+import time
 import Quizizz
 
 # narrativa_1 = f"Hoy 5 de marzo de 2021, la Universidad sigue en cuarentena (esto no es novedad), lo que sí es novedad es que se robaron un Disco Duro de la Universidad del cuarto de redes que tiene toda la información de SAP de estudiantes, pagos y  asignaturas. Necesitamos que nos ayudes a recuperar el disco, para eso tienes {(player.time)/60} minutos, antes de que el servidor se caiga y no se pueda hacer más nada. ¿Aceptas el reto?"
@@ -90,20 +91,20 @@ def start(users_db):
     username = input('Ingrese su username: ')
   if (len(users_db)) > 0:
     if username in users_db:
-      player = users_db[username]
+      player = users_db[f'{username}']
       password = input('Bienvenido de vuelta. Ingresa tu clave\n> ')
       while password != player[1]:
         password = input('Clave incorrecta\n> ')
-      if password == player.password:
-        difficulty, lives, clues, time = selec_dificultad()
-        player = Player.Player(username = player[0], password = player[1], age = player[2], avatar = player[3], difficulty = difficulty, lives = lives, clues = clues, time = time, record = player[-1], inventory = [])
-        return player, users_db
+
+      difficulty, lives, clues, time = selec_dificultad()
+      player = Player.Player(username = player[0], password = player[1], age = player[2], avatar = player[3], difficulty = difficulty, lives = lives, clues = clues, time = time, record = player[-1], inventory = [])
+      return player, users_db
 
   else:
     username, password, age, avatar = datos_basicos_usuario(username)
     difficulty, lives, clues, time = selec_dificultad()
-    player = Player.Player(username = username, password = password, age = age, avatar = avatar, difficulty = difficulty, lives = lives, clues = clues, time = time, inventory = [], record = []) 
-    users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar]
+    player = Player.Player(username = username, password = password, age = age, avatar = avatar, difficulty = difficulty, lives = lives, clues = clues, time = time, inventory = [], record = [0, 0, 0]) 
+    users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
     return player, users_db
 
 def record_to_json(player, users_db):
@@ -118,6 +119,8 @@ def start_game(player, users_db):
   continuar = True
   while player.lives > 0 and continuar:
     #BIBLIOTECA
+    # first_time = time.perf_counter()
+    
     room = 1
     print(graficos.small_spaces, graficos.library)
     
@@ -139,6 +142,8 @@ def start_game(player, users_db):
         objeto = 0
         ahorcar = Ahorcado.Ahorcado(room, objeto) # Ahorcado
         ahorcar.jugar(player) # Jugar al Ahorcado
+        # time_2 = time.perf_counter()
+        print(f'Te tardaste: {time_2-first_time} segundos')
       
       elif objeto_choice == 'Mueble con gabetas':
         objeto = 2
@@ -214,7 +219,7 @@ def start_game(player, users_db):
               #LABORATORIOS SL001
               while player.lives > 0 and continuar:
                 room = 0
-                print(graficos.small_spaces, graficos.laboratorios_sl001)
+                print(graficos.laboratorios_sl001)
 
                 movimientos = ['Ir hacia la derecha, SERVIDORES', 'Ir hacia la izquierda, PASILLO DE LABORATORIOS', 'Cancelar']
                 objetos = ['PC 1', 'Pizarra', 'PC 2', 'Cancelar']
@@ -233,7 +238,8 @@ def start_game(player, users_db):
                   elif objeto_choice == 'Pizarra': # Si elige el centro
                     objeto = 0
                     sopa = SopaLetras.SopaLetras(room, objeto)
-                    sopa.jugar(player) # TODO PROGRAMAR SOPA DE LETRAS
+                    sopa.llenar_matriz()
+                    sopa.jugar(player)
                     
 
                   elif objeto_choice == 'PC 2': # Si elige la derecha
@@ -272,11 +278,26 @@ def start_game(player, users_db):
                           # finalboss = FinalBoss.FinalBoss(room, objeto)
                           # finalboss.jugar(player)
                           # TODO si pierde appendear al record: player.record.append(f'DERROTA EN {player.difficulty}')
-                          player.record.append(f'VICTORIA EN {player.difficulty}')
-                          record_to_json(player, users_db)
-                          print('FELICIDADES, GANASTE!')
-                          continuar = False
-                        
+                          if finalboss.award in player.inventory:
+                            print('FELICIDADES, GANASTE!')
+                            
+                            if player.difficulty == 'Easy':
+                              player.record[0] += 1
+                              record_to_json(player, users_db)
+                              
+
+                            elif player.difficulty == 'Medium':
+                              player.record[1] += 1
+                              record_to_json(player, users_db)
+
+                            elif player.difficulty == 'Hard':
+                              player.record[-1] += 1
+                              record_to_json(player, users_db)
+
+                            continuar = False
+                          else:
+                            print(graficos.small_spaces, graficos.good_bye, graficos.small_spaces)
+
                         elif objeto_choice == 'Rack':
                           objeto = 1
                           palabramezcla = PalabraMezclada.PalabraMezclada(room, objeto) # Palabra mezclada
@@ -287,18 +308,12 @@ def start_game(player, users_db):
                         if desplazamiento == 'Ir hacia la izquierda, LABORATORIOS SL001':
                           break # Rompe el While de Servidores, para volver al pasillo
 
-                  
-                    
-
-
-
-
-
 def main():
   
   while True:
     users_db = json.load(open('users_db.json'))
-    print('Bienvenido a Escapemet! El Escape room más difícil de jugar y de programar, en toda la Unimet...', graficos.small_spaces)
+    print(users_db)
+    print(graficos.small_spaces,graficos.escape_met_title, graficos.small_spaces)
     main_menu_opciones = ['Crear una partida', 'Ver las instrucciones del juego', 'Estadísticas de jugadores']
     main_menu_opcion = enquiries.choose('', main_menu_opciones)
 
@@ -321,15 +336,12 @@ def main():
       print(f'{graficos.good_bye}')
       break
 
-    
-
-    # lista_usuarios = [player.show for user in users_db]
-    # print(f'USUARIOS: {lista_usuarios}')
 
 main()
-#TODO sopa de letras
-#TODO Eval para el de Pregunta Python
+#TODO tiempo
 #TODO programar cuando le gana al boss
 #TODO guardar records y todo en el .txt
+#TODO Estadísticas
+#TODO Reglas del juego para el menú principal
 #TODO comentar todo el código
 #TODO DIAGRAMA DE CLASES

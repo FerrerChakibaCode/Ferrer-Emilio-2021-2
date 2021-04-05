@@ -5,7 +5,7 @@ class Player:
     self.password = password
     self.age = age
     self.avatar = avatar
-    self.record = []
+    self.record = record
     self.difficulty = difficulty
     self.lives = lives
     self.clues = clues
