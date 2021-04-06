@@ -19,7 +19,7 @@ import requests
 import SopaLetras
 import time
 import Quizizz
-
+api = requests.get("https://api-escapamet.vercel.app/")
 # narrativa_1 = f"Hoy 5 de marzo de 2021, la Universidad sigue en cuarentena (esto no es novedad), lo que sí es novedad es que se robaron un Disco Duro de la Universidad del cuarto de redes que tiene toda la información de SAP de estudiantes, pagos y  asignaturas. Necesitamos que nos ayudes a recuperar el disco, para eso tienes {(player.time)/60} minutos, antes de que el servidor se caiga y no se pueda hacer más nada. ¿Aceptas el reto?"
 # narrativa_2 = f"Bienvenido {player.avatar}, gracias por tu disposición a ayudarnos a resolver este inconveniente,  te encuentras actualmente ubicado en la biblioteca, revisa el menú de opciones para ver qué acciones puedes realizar. Recuerda que el tiempo corre más rápido que un trimestre en este reto."
 # narrativa_final = "¡Felicidades! Has logrado evitar una catástrofe en la Unimet, entonces... (Se deja libre al estudiante continuar con el desenlace del final a nivel narrativo).  "
@@ -242,7 +242,6 @@ def start_game(player, users_db):
                   elif objeto_choice == 'Pizarra': # Si elige el centro
                     objeto = 0
                     sopa = SopaLetras.SopaLetras(room, objeto)
-                    sopa.jugar()
                     sopa.jugar(player)
                     
 
@@ -281,8 +280,8 @@ def start_game(player, users_db):
                           objeto = 0
                           # finalboss = FinalBoss.FinalBoss(room, objeto) FINAL EN CONSTRUCCIÓN
                           # finalboss.jugar(player) FINAL EN CONSTRUCCIÓN
-                          if api.json()[4]["objects"][0]["game"]["requirement"][0] in player.inventory and api.json()[4]["objects"][0]["game"]["requirement"][1]:
-                            print('FELICIDADES, GANASTE!')
+                          if api.json()[4]["objects"][0]["game"]["requirement"][0] in player.inventory and api.json()[4]["objects"][0]["game"]["requirement"][1] in player.inventory:
+                            print(f'{graficos.ganaste}\n\n\nGracias a ti, ahora SAP está de vuelta en línea, Sirius funciona de nuevo, y todo volvió a la normalidad\n\n\n\n\n\n\n\nQuisiera disculparme por lo incompleto de mi proyecto, me costó mucho pero me hizo darme cuenta que quiero dedicarle mi vida a esto.')
                             if player.difficulty == 'Easy':
                               player.record[0] += 1
                             elif player.difficulty == 'Medium':
@@ -342,12 +341,12 @@ def main():
       if start_choice == 'Sí, claro.': # Comienza el juego
       # Narrativa 2
         print(f"Bienvenido {player.avatar}, gracias por tu disposición a ayudarnos a resolver este inconveniente,  te encuentras actualmente ubicado en la biblioteca, revisa el menú de opciones para ver qué acciones puedes realizar. Recuerda que el tiempo corre más rápido que un trimestre en este reto.") 
-        start_game(player, users_db) # Arranga la partida
+        start_game(player, users_db) # Arranca la partida
       else:
         print(f'{graficos.good_bye}')
         break
     elif main_menu_opcion == main_menu_opciones[1]: # Ver instrucciones del juego
-      print(f'{graficos.small_spaces, graficos.instrucciones}')
+      print(graficos.small_spaces, graficos.instrucciones)
       input('> ')
     
     elif main_menu_opcion == main_menu_opciones[2]: # Ver estadísticas, aunque no funcionan...

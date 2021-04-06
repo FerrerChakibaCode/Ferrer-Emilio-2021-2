@@ -5,7 +5,6 @@ import Player
 import graficos
 from Game import Game
 api = requests.get("https://api-escapamet.vercel.app/")
-# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class LogicaResuelve(Game):
   def __init__(self, room, objeto): 
@@ -35,7 +34,7 @@ class LogicaResuelve(Game):
         if user_answer == self.answer:
           player.inventory.append(self.award)
           print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
-          print(player.show())
+
           break
         else:
           player.lives -= 1

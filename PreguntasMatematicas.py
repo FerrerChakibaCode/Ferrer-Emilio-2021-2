@@ -8,7 +8,6 @@ from sympy.parsing.sympy_parser import parse_expr
 from Game import Game
 
 api = requests.get("https://api-escapamet.vercel.app/")
-# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class PreguntasMatematicas(Game):
   #PONER AWARD COMO VIDA EXTRA
@@ -24,7 +23,6 @@ class PreguntasMatematicas(Game):
     self.question = self.game["questions"][n]
     print(f'\n-------------------------------------------\n{self.game["name"].title()}\n\nREGLAS DEL JUEGO -> {self.rules.capitalize()}\nEscribe tu resultado con un solo decimal.\n\n')
     print(self.question["question"])
-    # self.answers = [self.question["answers"][x] for x in range (5)]
 
   def jugar(self, player):
     if self.requirement in player.inventory and self.award not in player.inventory:
@@ -50,7 +48,6 @@ class PreguntasMatematicas(Game):
           player.lives += 1
           player.inventory.append(self.award)
           print(f'\n-------------------------------------------\nCORRECTO! Has ganado una {self.award.upper()} para tus siguientes retos...')
-          print(player.show())
           break
 
         elif user_answer != str(evaluar_derivada_en_x):

@@ -63,7 +63,7 @@ class Criptograma(Game): #1,2
         if user_answer.lower() in answers_list: 
           player.inventory.append(self.award)
           print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award} para tus siguientes retos...')
-          player.show()
+
           break
 
         elif len(user_answer) != len(self.answer): # Si su respuesta no tiene el length que es, le advierto

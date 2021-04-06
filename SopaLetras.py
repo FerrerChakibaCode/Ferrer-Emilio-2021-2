@@ -104,7 +104,6 @@ class SopaLetras(Game):
     for fila in range(len(matriz_vacia)):
       print(matriz_vacia[fila])
 
-  def jugar(self, player):
     while len(self.answers) > 0 and self.award not in player.inventory and player.lives > 0:
       for x in range(len(self.answers)):
         self.answers[x] = self.answers[x].lower()

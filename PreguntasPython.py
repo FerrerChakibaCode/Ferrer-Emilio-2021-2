@@ -30,7 +30,6 @@ class PreguntasPython(Game):
         if user_answer == "frase=int(float(((frase.split())[-2]).replace(',','.')))" or user_answer == "int(float(((frase.split())[-2]).replace(',','.')))" or user_answer == "frase=int(float(((frase.split())[4]).replace(',','.')))" or user_answer == "int(float(((frase.split())[4]).replace(',','.')))":
           player.inventory.append(self.award)
           print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
-          print(player.show())
           break
 
         elif user_answer == 'p' and len(self.clues) > 0 and player.clues > 0:
@@ -56,7 +55,6 @@ class PreguntasPython(Game):
         if user_answer == "frase=frase[::-1]" or user_answer == "frase[::-1]":
           player.inventory.append(self.award)
           print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
-          print(player.show())
           break
 
         elif user_answer == 'p' and len(self.clues) > 0 and player.clues > 0:

@@ -6,7 +6,6 @@ import graficos
 from Game import Game
 
 api = requests.get("https://api-escapamet.vercel.app/")
-# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class MemoriaEmoji(Game):
   def __init__(self, room, objeto):
@@ -38,14 +37,15 @@ class MemoriaEmoji(Game):
           memoria[-1].append(' ? ')
 
       while player.lives > 0:
-
+        
         print(memoria[0])
         print(memoria[1])
         print(memoria[2])
         print(memoria[3])    
         print(graficos.spaces)
         if memoria == pregunta:
-          print('GANASTE!')
+          player.inventory.append(self.award)
+          print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
           break
 
         filas_columnas = [1, 2, 3, 4]
@@ -79,7 +79,7 @@ class MemoriaEmoji(Game):
 
         pick_2_fila = (enquiries.choose('ELIJA FILA DEL SEGUNDO EMOJI →', filas_columnas)) - 1
         pick_2_columna = (enquiries.choose('ELIJA COLUMNA DEL SEGUNDO EMOJI ↑', filas_columnas)) - 1
-#  (memoria[pick_2_fila][pick_2_columna] != '?') or
+
         while (pick_1_columna == pick_2_columna and pick_1_fila == pick_2_fila):
           print('CUIDADO! Revisa qué estás seleccionando.')
 

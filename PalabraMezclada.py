@@ -34,7 +34,6 @@ class PalabraMezclada(Game):
       if user_answer == self.question["words"][n]:
         player.inventory.append(self.award)
         print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
-        print(player.show())
         break
 
       elif len(user_answer) != len(self.question["words"][n]):
@@ -45,4 +44,4 @@ class PalabraMezclada(Game):
         print(f"Incorrecto! Has perdido media vida, te quedan {player.lives}. Si desea seguir intentando responder ingrese su respuesta. Si no, presione 'Enter'\n")
     
     if self.award in player.inventory:
-      print(f'Ya tienes {self.award}.upper() en tu inventario, no puedes volver a jugar este juego.')
+      print(f'Ya tienes {self.award.upper()} en tu inventario, no puedes volver a jugar este juego.')

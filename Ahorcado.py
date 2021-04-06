@@ -82,7 +82,7 @@ class Ahorcado(Game):
       if answer_displayed == self.answer: # Si la respuesta que armó es la que está en self.answer, ganó
         player.inventory.append(self.award)
         print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado el {self.award.upper()} para tus siguientes retos...')
-        player.show()
+
         break
     
     if self.award in player.inventory: # Para que no repita el juego por el award

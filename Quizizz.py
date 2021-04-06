@@ -5,7 +5,6 @@ import Player
 import graficos
 from Game import Game
 api = requests.get("https://api-escapamet.vercel.app/")
-# emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class Quizizz(Game):
   def __init__(self, room, objeto):
@@ -32,7 +31,6 @@ class Quizizz(Game):
           print(f'\nEscogiste {user_answer}\n')
           player.inventory.append(self.award)
           print(f'\n-------------------------------------------\nCORRECTO! Has desbloqueado {self.award.upper()} para tus siguientes retos...')
-          print(player.show())
           break
         elif (user_answer not in self.correct_answer) and user_answer != 'Pista' :
           player.lives -= 0.5
