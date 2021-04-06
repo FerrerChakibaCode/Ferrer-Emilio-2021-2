@@ -310,7 +310,7 @@ def start_game(player, users_db):
                           #     users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
                           #     record_to_json(player, users_db)
 
-                          continuar = False
+                          
 
                           # else:
                           #   print(graficos.small_spaces, graficos.good_bye, graficos.small_spaces)
