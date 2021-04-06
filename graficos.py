@@ -1,6 +1,4 @@
 # En este archivo iran los ASCII de las gráficas
-#TODO Gráficas de los rooms
-#TODO Quitarle el texto al main sobre las direcciones, ponérselo a las gráficas
 
 # PARA EL AHORCADO, LUEGO MOVER HACIA ABAJO Y DEJAR LOS ROOMS ARRIBA
 spaces = "\n" * 10
@@ -311,7 +309,30 @@ alfabeto_desplazado = [
 ]
 
 
+instrucciones = '''
+         __________________________________________________________________________________
+        / ____              __                                                             /
+       / /  _/____   _____ / /_ _____ __  __ _____ _____ (_)____   ____   ___   _____     /
+      /  / / / __ \ / ___// __// ___// / / // ___// ___// // __ \ / __ \ / _ \ / ___/    /
+     / _/ / / / / /(__  )/ /_ / /   / /_/ // /__ / /__ / // /_/ // / / //  __/(__  )    /
+    / /___//_/ /_//____/ \__//_/    \__,_/ \___/ \___//_/ \____//_/ /_/ \___//____/    /
+   /__________________________________________________________________________________/                                           
 
+1. Deberás encontrar el Disco Duro robado (ver al empezar el juego la narrativa) y devolverlo al Cuarto de Servidores,
+para esto deberás ir de cuarto en cuarto inspeccionando objetos hasta encontrarlo.
+
+2. Tendrás dos opciones siempre que estés en un cuarto: Inspeccionar objeto, y Salir del cuarto. Al inspeccionar un objeto
+encontrarás un juego que podrás o no jugar, dependiendo de si tienes lo necesario. Y siempre puedes desplazarte entre cuartos, sin 
+necesidad de ningún item.
+
+3. Acerca de la dificultad: Al empezar a jugar eligirás una dificultad, que determinará la cantidad de vidas y pistas que tendrás.
+Si te quedas sin vidas, pierdes el juego. Las pistas te ayudarán a pasar los juegos.
+
+4. Reglas de cada juego: cada juego tendrá sus reglas, que determinarán la penitencia en caso de perder.
+
+5. Qué esperas? Anda, salva SAP, salva a la Unimet.
+
+'''
 
 escape_met_title = '''
    ▄████████    ▄████████  ▄████████    ▄████████    ▄███████▄    ▄████████    ▄▄▄▄███▄▄▄▄      ▄████████     ███     

@@ -21,7 +21,7 @@ class SopaLetras(Game):
     self.clues = [self.question[f"clue_{x}"] for x in range(1,4)]
     self.answers = [self.question["answer_1"], self.question["answer_2"], self.question["answer_3"]]
 
-  def llenar_matriz(self): #PASARLE PLAYER
+  def jugar(self, player):
     self.filas = 15
     self.columnas = 15
     matriz_vacia = [[] for x in range (self.filas)]

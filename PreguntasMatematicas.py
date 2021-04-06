@@ -63,4 +63,4 @@ class PreguntasMatematicas(Game):
         print(f'Ya tienes {self.award.upper()} en tu inventario, no puedes volver a jugar este juego.')
 
     else:
-      print(graficos.small_spaces,self.message_requirement,graficos.small_spaces)
+      print(graficos.small_spaces,self.message_requirement)

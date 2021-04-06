@@ -3,6 +3,7 @@ import Ahorcado
 import Criptograma
 import enquiries
 import EscogeNumero
+import Estadistica
 import FinalBoss
 import Game
 import graficos
@@ -93,7 +94,7 @@ def start(users_db):
   if username in users_db:
     data_player = users_db[f'{username}']
     password = input('Bienvenido de vuelta. Ingresa tu clave\n> ')
-    while password != player[1]:
+    while password != data_player[1]:
       password = input('Clave incorrecta\n> ')
 
     difficulty, lives, clues, time = selec_dificultad()
@@ -107,24 +108,6 @@ def start(users_db):
     player = Player.Player(username = username, password = password, age = age, avatar = avatar, difficulty = difficulty, lives = lives, clues = clues, time = time, inventory = [], record = [0, 0, 0]) 
     
     return player
-
-# define the countdown func.
-def countdown(t, player):
-    
-    while t:
-        mins, secs = divmod(t, 60)
-        timer = '{:02d}:{:02d}'.format(mins, secs)
-        print(timer, end="\r")
-        time.sleep(1)
-        t -= 1
-      
-    print('Fire in the hole!!')
-  
-  
-# input time in seconds
-
-  
-# function call
 
 def record_to_json(player, users_db):
   users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
@@ -141,8 +124,9 @@ def start_game(player, users_db):
     # countdown(t, player)
     #BIBLIOTECA
     # first_time = time.perf_counter()
-    boss = FinalBoss.FinalBoss(4,0)
-    boss.jugar(player)
+    # boss = FinalBoss.FinalBoss(4,0)
+    # boss.jugar(player)
+
     room = 1
     print(graficos.small_spaces, graficos.library)
     
@@ -164,8 +148,6 @@ def start_game(player, users_db):
         objeto = 0
         ahorcar = Ahorcado.Ahorcado(room, objeto) # Ahorcado
         ahorcar.jugar(player) # Jugar al Ahorcado
-        # time_2 = time.perf_counter()
-        print(f'Te tardaste: {time_2-first_time} segundos')
       
       elif objeto_choice == 'Mueble con gabetas':
         objeto = 2
@@ -260,7 +242,7 @@ def start_game(player, users_db):
                   elif objeto_choice == 'Pizarra': # Si elige el centro
                     objeto = 0
                     sopa = SopaLetras.SopaLetras(room, objeto)
-                    sopa.llenar_matriz()
+                    sopa.jugar()
                     sopa.jugar(player)
                     
 
@@ -328,6 +310,7 @@ def start_game(player, users_db):
                           #     player.record[-1] += 1
                           #     users_db[f'{player.username}'] = [player.username, player.password, player.age, player.avatar, player.record]
                           #     record_to_json(player, users_db)
+
                           continuar = False
 
                           # else:
@@ -344,11 +327,9 @@ def start_game(player, users_db):
                           break # Rompe el While de Servidores, para volver al pasillo
 
 def main():
-  
   while True:
-    users_db = json.load(open('users_db.json'))
-    print(users_db)
-    print(graficos.small_spaces,graficos.escape_met_title, graficos.small_spaces)
+    users_db = json.load(open('users_db.json')) # Cargar database directo del .json
+    print(graficos.small_spaces,graficos.escape_met_title, graficos.small_spaces) # Printear title
     main_menu_opciones = ['Crear una partida', 'Ver las instrucciones del juego', 'Estadísticas de jugadores']
     main_menu_opcion = enquiries.choose('', main_menu_opciones)
 
@@ -361,24 +342,19 @@ def main():
       if start_choice == 'Sí, claro.': # Comienza el juego
       # Narrativa 2
         print(f"Bienvenido {player.avatar}, gracias por tu disposición a ayudarnos a resolver este inconveniente,  te encuentras actualmente ubicado en la biblioteca, revisa el menú de opciones para ver qué acciones puedes realizar. Recuerda que el tiempo corre más rápido que un trimestre en este reto.") 
-        start_game(player, users_db)
+        start_game(player, users_db) # Arranga la partida
+      else:
+        print(f'{graficos.good_bye}')
+        break
     elif main_menu_opcion == main_menu_opciones[1]: # Ver instrucciones del juego
-      print('Instrucciones')
+      print(f'{graficos.small_spaces, graficos.instrucciones}')
+      input('> ')
     
-    elif main_menu_opcion == main_menu_opciones[2]:
-      print('Highscores')
-
+    elif main_menu_opcion == main_menu_opciones[2]: # Ver estadísticas, aunque no funcionan...
+      graph = Estadistica.Estadistica(users_db)
+      graph.plays_the_most()
     else: # Si no elige una opción válida
       print(f'{graficos.good_bye}')
       break
 
-
 main()
-#TODO revisar sopa de letras
-#TODO tiempo
-#TODO programar cuando le gana al boss
-#TODO guardar records y todo en el .txt
-#TODO Estadísticas
-#TODO Reglas del juego para el menú principal
-#TODO comentar todo el código
-#TODO DIAGRAMA DE CLASES

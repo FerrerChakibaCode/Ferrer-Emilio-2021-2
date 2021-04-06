@@ -8,20 +8,20 @@ api = requests.get("https://api-escapamet.vercel.app/")
 # emilio = Player.Player('emiferrer', 'az0909az', 19, 'Tostadora marca Oster', 'Easy', 5, 5, 600, ['contraseña'])
 
 class LogicaResuelve(Game):
-  def __init__(self, room, objeto):
-    super().__init__(room, objeto)
-    self.game = self.objeto["game"]
-    self.message_requirement = self.game["message_requirement"]
-    self.requirement1 = self.game["requirement"][0]
-    self.requirement2 = self.game["requirement"][1]
-    self.award = self.game["award"]
-    self.name = self.game["name"]
-    self.rules = self.game["rules"]
+  def __init__(self, room, objeto): 
+    super().__init__(room, objeto)  # Se trae del padre: Room = api.json()[room], Objeto = api.json()[room]["objects"][objeto]
+    self.game = self.objeto["game"] # Todos los valores del juego completo
+    self.message_requirement = self.game["message_requirement"]  # Mensaje por si no tiene el requisito
+    self.requirement1 = self.game["requirement"][0]  # requisito
+    self.requirement2 = self.game["requirement"][1] # requisito
+    self.award = self.game["award"] # item del award
+    self.name = self.game["name"] # nombre del juego
+    self.rules = self.game["rules"] # reglas por si se equivoca
     
     n = random.randint(0,(len(self.game["questions"]))-1) # Seleccionador random de qué pregunta toca responder
     self.question = self.game["questions"][n]
-    self.answers = ['67', '41']
-    self.answer = self.answers[n]
+    self.answers = ['67', '41'] # respuestas 
+    self.answer = self.answers[n] # respuesta especifica a la pregunta que le toca
 
   def jugar(self, player):
     
@@ -46,7 +46,7 @@ class LogicaResuelve(Game):
 
     elif not (self.requirement1 and self.requirement2 in player.inventory):
       player.lives -= 1
-      print(graficos.small_spaces, self.message_requirement, f'\nTe quedan {player.lives} vidas.', graficos.small_spaces)       
+      print(graficos.small_spaces, self.message_requirement, f'\nTe quedan {player.lives} vidas.')       
 
     if player.lives <= 0:
-      print(graficos.good_bye) # TODO cambiar por un ASCII de game-over
+      print(graficos.good_bye)

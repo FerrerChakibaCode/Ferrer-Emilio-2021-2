@@ -9,7 +9,7 @@ from Game import Game
 
 class FinalBoss(Game):
   def __init__(self, room, objeto):
-    super().__init__(room, objeto)
+    super().__init__(room, objeto) 
     self.game = self.objeto["game"]
     self.message_requirement = self.game["message_requirement"]
     self.requirements = self.game["requirement"]
@@ -27,7 +27,8 @@ class FinalBoss(Game):
 
     ganador = 2
     n = 0
-    while ganador == 2:
+    while ganador == 2 and player.lives > 0:
+      ganador = 2
       if n == 0: #Juega primero el user
         for x in range(len(matriz)):
           if matriz[x][0] == 'X' and  matriz[x][1] == 'X' and  matriz[x][2] == 'X':
@@ -54,6 +55,11 @@ class FinalBoss(Game):
           elif matriz[x][x] == 'O' and  matriz[x][x] == 'O' and  matriz[x][x] == 'O':
             ganador = 1
             break
+          
+        if ganador != 2:
+          break
+        else:
+          continue
 
         print(matriz[0])
         print(matriz[1])
@@ -100,7 +106,12 @@ class FinalBoss(Game):
           elif matriz[x][x] == 'O' and  matriz[x][x] == 'O' and  matriz[x][x] == 'O':
             ganador = 1
             break
-                
+
+        if ganador != 2:
+          break
+        else:
+          continue
+
         print(matriz[0])
         print(matriz[1])
         print(matriz[2])
@@ -121,4 +132,10 @@ class FinalBoss(Game):
         ganador = 2
         n = 0
     
-    print()
+    if ganador == 0:
+      print(f'¡Felicidades, {player.avatar}! Has logrado evitar una catástrofe en la Unimet, gracias al DISCO DURO que recuperaste Sirius funcionará de nuevo, y te podrán descontar la deuda que tienes desde hace años. Ah no, es que no pagaste nunca... bueno, feliz día!')
+      player.inventory.append(self.award)
+    
+    elif ganador == 1:
+      player.lives -= 1
+      print(f'PERDISTE! Has perdido media vida y te quedan {player.lives}.')
