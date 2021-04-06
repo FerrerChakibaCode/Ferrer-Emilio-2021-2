@@ -26,7 +26,7 @@ class Adivinanza(Game):
     
 
   def jugar(self, player):
-    while player.lives > 0 and self.award not in player.inventory:
+    while player.lives > 0 and self.award not in player.inventory and "contraseña" in player.inventory:
       user_answer = input('> ')
       if user_answer in self.answers:
         player.inventory.append(self.award)
